@@ -1,0 +1,74 @@
+{
+  "name": "Height Banana - Flutter Development",
+  "image": "ghcr.io/cirruslabs/flutter:stable",
+  
+  "features": {
+    "ghcr.io/devcontainers/features/git:1": {
+      "version": "latest"
+    },
+    "ghcr.io/devcontainers/features/github-cli:1": {
+      "version": "latest"
+    },
+    "ghcr.io/devcontainers/features/node:1": {
+      "version": "lts"
+    }
+  },
+
+  "customizations": {
+    "vscode": {
+      "extensions": [
+        "dart-code.dart-code",
+        "dart-code.flutter",
+        "alexisvt.flutter-snippets",
+        "nash.awesome-flutter-snippets",
+        "everettjf.pubspec-assist",
+        "robert-brunhage.flutter-riverpod-snippets",
+        "usernamehw.errorlens",
+        "streetsidesoftware.code-spell-checker",
+        "eamodio.gitlens",
+        "github.copilot",
+        "github.copilot-chat"
+      ],
+      "settings": {
+        "dart.flutterSdkPath": "/sdks/flutter",
+        "dart.debugExternalPackageLibraries": true,
+        "dart.debugSdkLibraries": false,
+        "editor.formatOnSave": true,
+        "editor.codeActionsOnSave": {
+          "source.fixAll": "explicit",
+          "source.organizeImports": "explicit"
+        },
+        "[dart]": {
+          "editor.formatOnSave": true,
+          "editor.selectionHighlight": false,
+          "editor.suggest.snippetsPreventQuickSuggestions": false,
+          "editor.suggestSelection": "first",
+          "editor.tabCompletion": "onlySnippets",
+          "editor.wordBasedSuggestions": "off"
+        }
+      }
+    }
+  },
+
+  "forwardPorts": [8080, 5000, 9099],
+  
+  "postCreateCommand": "bash .devcontainer/post-create.sh",
+  
+  "remoteUser": "root",
+  
+  "mounts": [
+    "source=${localEnv:HOME}/.ssh,target=/root/.ssh,type=bind,consistency=cached",
+    "source=${localEnv:HOME}/.gitconfig,target=/root/.gitconfig,type=bind,consistency=cached"
+  ],
+
+  "runArgs": [
+    "--privileged"
+  ],
+
+  "containerEnv": {
+    "FLUTTER_ROOT": "/sdks/flutter",
+    "ANDROID_HOME": "/opt/android-sdk-linux",
+    "ANDROID_SDK_ROOT": "/opt/android-sdk-linux",
+    "PATH": "/sdks/flutter/bin:/opt/android-sdk-linux/cmdline-tools/latest/bin:/opt/android-sdk-linux/platform-tools:${containerEnv:PATH}"
+  }
+}

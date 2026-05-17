@@ -1,0 +1,116 @@
+name: 🚀 Development Deployment
+
+on:
+  pull_request:
+    types: [opened, synchronize, reopened]
+    branches:
+      - main
+      - develop
+  push:
+    branches:
+      - develop
+
+concurrency:
+  group: dev-${{ github.ref }}
+  cancel-in-progress: true
+
+env:
+  FLUTTER_VERSION: '3.22.0'
+
+jobs:
+  # Run all quality checks
+  quality:
+    name: 🔍 Quality Checks
+    uses: ./.github/workflows/quality.yml
+    with:
+      flutter-version: '3.22.0'
+
+  # Run test suite
+  test:
+    name: 🧪 Test Suite
+    uses: ./.github/workflows/test.yml
+    with:
+      flutter-version: '3.22.0'
+
+  # Build development APK
+  build:
+    name: 📦 Build Development
+    needs: [quality, test]
+    uses: ./.github/workflows/build.yml
+    with:
+      flutter-version: '3.22.0'
+      build-number: ${{ github.run_number }}
+      environment: 'development'
+
+  # Deploy to development environment
+  deploy-dev:
+    name: 🚢 Deploy to Development
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: development
+      url: https://dev.height-banana.app
+    
+    steps:
+      - name: 📥 Download APK
+        uses: actions/download-artifact@v4
+        with:
+          name: apk-development-${{ github.run_number }}
+
+      - name: 🚀 Deploy to Firebase App Distribution
+        uses: wzieba/Firebase-Distribution-Github-Action@v1
+        with:
+          appId: ${{ secrets.FIREBASE_APP_ID_DEV }}
+          serviceCredentialsFileContent: ${{ secrets.FIREBASE_SERVICE_ACCOUNT }}
+          groups: testers-dev
+          file: app-debug.apk
+          releaseNotes: |
+            🚀 Development Build ${{ github.run_number }}
+            
+            📝 Changes:
+            ${{ github.event.head_commit.message }}
+            
+            🔗 Branch: ${{ github.ref_name }}
+            👤 Author: ${{ github.actor }}
+
+      - name: 💬 Comment on PR
+        if: github.event_name == 'pull_request'
+        uses: actions/github-script@v7
+        with:
+          script: |
+            github.rest.issues.createComment({
+              issue_number: context.issue.number,
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              body: `## 🚀 Development Deployment
+
+              ✅ Successfully deployed to **Development** environment!
+
+              **Build:** ${{ github.run_number }}
+              **Environment:** Development
+              **Download:** Firebase App Distribution (testers-dev group)
+
+              📱 Install the app from Firebase App Distribution to test this PR.`
+            });
+
+  # Notify on success/failure
+  notify:
+    name: 📢 Notify Results
+    needs: [quality, test, build, deploy-dev]
+    if: always()
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: ✅ Success notification
+        if: ${{ needs.deploy-dev.result == 'success' }}
+        run: |
+          echo "### ✅ Development Deployment Successful!" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "Build ${{ github.run_number }} deployed to development environment" >> $GITHUB_STEP_SUMMARY
+
+      - name: ❌ Failure notification
+        if: ${{ needs.deploy-dev.result == 'failure' }}
+        run: |
+          echo "### ❌ Development Deployment Failed" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "Check logs for details" >> $GITHUB_STEP_SUMMARY

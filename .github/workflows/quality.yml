@@ -1,0 +1,86 @@
+name: 🔍 Code Quality
+
+on:
+  workflow_call:
+    inputs:
+      flutter-version:
+        description: 'Flutter version to use'
+        required: false
+        type: string
+        default: '3.22.0'
+
+jobs:
+  analyze:
+    name: Static Analysis
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    
+    steps:
+      - name: 📥 Checkout code
+        uses: actions/checkout@v4
+
+      - name: 🐦 Setup Flutter
+        uses: subosito/flutter-action@v2
+        with:
+          flutter-version: ${{ inputs.flutter-version }}
+          channel: 'stable'
+          cache: true
+
+      - name: 📦 Get dependencies
+        run: flutter pub get
+
+      - name: 🔨 Generate code
+        run: flutter pub run build_runner build --delete-conflicting-outputs
+
+      - name: 🔍 Run analyzer
+        run: |
+          flutter analyze --fatal-infos --fatal-warnings
+          echo "✅ Analysis complete - no issues found"
+
+      - name: 🎨 Check formatting
+        run: |
+          dart format --set-exit-if-changed .
+          echo "✅ Code is properly formatted"
+
+      - name: 📝 Check for TODO/FIXME
+        run: |
+          if grep -r "TODO\|FIXME" lib/ --exclude-dir={build,generated}; then
+            echo "⚠️ Found TODO/FIXME comments"
+          else
+            echo "✅ No TODO/FIXME comments found"
+          fi
+
+  security:
+    name: Security Scan
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    
+    steps:
+      - name: 📥 Checkout code
+        uses: actions/checkout@v4
+
+      - name: 🔒 Run Trivy vulnerability scanner
+        uses: aquasecurity/trivy-action@master
+        with:
+          scan-type: 'fs'
+          scan-ref: '.'
+          format: 'sarif'
+          output: 'trivy-results.sarif'
+
+      - name: 📤 Upload Trivy results to GitHub Security
+        uses: github/codeql-action/upload-sarif@v3
+        if: always()
+        with:
+          sarif_file: 'trivy-results.sarif'
+
+  dependency-review:
+    name: Dependency Review
+    runs-on: ubuntu-latest
+    if: github.event_name == 'pull_request'
+    
+    steps:
+      - name: 📥 Checkout code
+        uses: actions/checkout@v4
+
+      - name: 🔍 Dependency Review
+        uses: actions/dependency-review-action@v4

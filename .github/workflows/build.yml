@@ -1,0 +1,114 @@
+name: 📦 Build
+
+on:
+  workflow_call:
+    inputs:
+      flutter-version:
+        description: 'Flutter version to use'
+        required: false
+        type: string
+        default: '3.22.0'
+      build-number:
+        description: 'Build number'
+        required: true
+        type: string
+      environment:
+        description: 'Environment (development or production)'
+        required: true
+        type: string
+    secrets:
+      KEYSTORE_BASE64:
+        required: false
+      KEYSTORE_PASSWORD:
+        required: false
+      KEY_ALIAS:
+        required: false
+      KEY_PASSWORD:
+        required: false
+    outputs:
+      apk-path:
+        description: 'Path to built APK'
+        value: ${{ jobs.build.outputs.apk }}
+      aab-path:
+        description: 'Path to built AAB'
+        value: ${{ jobs.build.outputs.aab }}
+
+jobs:
+  build:
+    name: Build APK & AAB
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    outputs:
+      apk: ${{ steps.build.outputs.apk }}
+      aab: ${{ steps.build.outputs.aab }}
+    
+    steps:
+      - name: 📥 Checkout code
+        uses: actions/checkout@v4
+
+      - name: 🐦 Setup Flutter
+        uses: subosito/flutter-action@v2
+        with:
+          flutter-version: ${{ inputs.flutter-version }}
+          channel: 'stable'
+          cache: true
+
+      - name: ☕ Setup Java
+        uses: actions/setup-java@v4
+        with:
+          distribution: 'zulu'
+          java-version: '17'
+          cache: 'gradle'
+
+      - name: 📦 Get dependencies
+        run: flutter pub get
+
+      - name: 🔨 Generate code
+        run: flutter pub run build_runner build --delete-conflicting-outputs
+
+      - name: 🔑 Decode keystore (Production only)
+        if: inputs.environment == 'production'
+        run: |
+          echo "${{ secrets.KEYSTORE_BASE64 }}" | base64 -d > android/app/keystore.jks
+          echo "storePassword=${{ secrets.KEYSTORE_PASSWORD }}" > android/key.properties
+          echo "keyPassword=${{ secrets.KEY_PASSWORD }}" >> android/key.properties
+          echo "keyAlias=${{ secrets.KEY_ALIAS }}" >> android/key.properties
+          echo "storeFile=keystore.jks" >> android/key.properties
+
+      - name: 🏗️ Build APK
+        id: build
+        run: |
+          if [ "${{ inputs.environment }}" == "production" ]; then
+            flutter build apk --release --build-number=${{ inputs.build-number }}
+            echo "apk=build/app/outputs/flutter-apk/app-release.apk" >> $GITHUB_OUTPUT
+          else
+            flutter build apk --debug --build-number=${{ inputs.build-number }}
+            echo "apk=build/app/outputs/flutter-apk/app-debug.apk" >> $GITHUB_OUTPUT
+          fi
+
+      - name: 📦 Build App Bundle (Production only)
+        if: inputs.environment == 'production'
+        run: |
+          flutter build appbundle --release --build-number=${{ inputs.build-number }}
+          echo "aab=build/app/outputs/bundle/release/app-release.aab" >> $GITHUB_OUTPUT
+
+      - name: 📤 Upload APK artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: apk-${{ inputs.environment }}-${{ inputs.build-number }}
+          path: ${{ steps.build.outputs.apk }}
+          retention-days: 30
+
+      - name: 📤 Upload AAB artifact (Production only)
+        if: inputs.environment == 'production'
+        uses: actions/upload-artifact@v4
+        with:
+          name: aab-production-${{ inputs.build-number }}
+          path: ${{ steps.build.outputs.aab }}
+          retention-days: 90
+
+      - name: 🧹 Cleanup
+        if: always()
+        run: |
+          rm -f android/app/keystore.jks
+          rm -f android/key.properties

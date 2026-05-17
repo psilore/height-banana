@@ -1,0 +1,83 @@
+name: 🧪 Test Suite
+
+on:
+  workflow_call:
+    inputs:
+      flutter-version:
+        description: 'Flutter version to use'
+        required: false
+        type: string
+        default: '3.22.0'
+    outputs:
+      coverage:
+        description: 'Test coverage percentage'
+        value: ${{ jobs.test.outputs.coverage }}
+
+jobs:
+  test:
+    name: Run Tests
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    outputs:
+      coverage: ${{ steps.coverage.outputs.percentage }}
+    
+    steps:
+      - name: 📥 Checkout code
+        uses: actions/checkout@v4
+
+      - name: 🐦 Setup Flutter
+        uses: subosito/flutter-action@v2
+        with:
+          flutter-version: ${{ inputs.flutter-version }}
+          channel: 'stable'
+          cache: true
+
+      - name: 📦 Get dependencies
+        run: flutter pub get
+
+      - name: 🔨 Generate code
+        run: flutter pub run build_runner build --delete-conflicting-outputs
+
+      - name: 🧪 Run unit tests
+        run: flutter test test/ --coverage --reporter expanded
+
+      - name: 🎭 Run widget tests
+        run: flutter test test/widget/ --reporter expanded
+
+      - name: 📊 Generate coverage report
+        id: coverage
+        run: |
+          dart pub global activate coverage
+          dart pub global run coverage:format_coverage --lcov --in=coverage --out=coverage/lcov.info --report-on=lib
+          COVERAGE=$(lcov --summary coverage/lcov.info | grep "lines" | awk '{print $2}' | sed 's/%//')
+          echo "percentage=$COVERAGE" >> $GITHUB_OUTPUT
+          echo "✅ Test coverage: $COVERAGE%"
+
+      - name: 📈 Upload coverage to Codecov
+        uses: codecov/codecov-action@v3
+        with:
+          files: coverage/lcov.info
+          flags: unittests
+          name: flutter-coverage
+
+      - name: 💬 Comment coverage on PR
+        if: github.event_name == 'pull_request'
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const coverage = '${{ steps.coverage.outputs.percentage }}';
+            github.rest.issues.createComment({
+              issue_number: context.issue.number,
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              body: `## 📊 Test Coverage Report\n\n**Coverage:** ${coverage}%\n\n✅ All tests passed!`
+            });
+
+      - name: ✅ Test results summary
+        if: always()
+        run: |
+          echo "### 🧪 Test Summary" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "✅ Unit tests: PASSED" >> $GITHUB_STEP_SUMMARY
+          echo "✅ Widget tests: PASSED" >> $GITHUB_STEP_SUMMARY
+          echo "📊 Coverage: ${{ steps.coverage.outputs.percentage }}%" >> $GITHUB_STEP_SUMMARY

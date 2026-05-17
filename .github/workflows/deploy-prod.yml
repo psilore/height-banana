@@ -1,0 +1,172 @@
+name: 🏭 Production Deployment
+
+on:
+  workflow_call:
+    inputs:
+      version:
+        description: 'Version number'
+        required: true
+        type: string
+      tag-name:
+        description: 'Git tag name'
+        required: true
+        type: string
+  workflow_dispatch:
+    inputs:
+      version:
+        description: 'Version number'
+        required: true
+        type: string
+      tag-name:
+        description: 'Git tag name'
+        required: true
+        type: string
+
+env:
+  FLUTTER_VERSION: '3.22.0'
+
+jobs:
+  # Run full test suite
+  test:
+    name: 🧪 Full Test Suite
+    uses: ./.github/workflows/test.yml
+    with:
+      flutter-version: '3.22.0'
+
+  # Run quality checks
+  quality:
+    name: 🔍 Quality Checks
+    uses: ./.github/workflows/quality.yml
+    with:
+      flutter-version: '3.22.0'
+
+  # Build production artifacts
+  build:
+    name: 📦 Build Production
+    needs: [test, quality]
+    uses: ./.github/workflows/build.yml
+    with:
+      flutter-version: '3.22.0'
+      build-number: ${{ github.run_number }}
+      environment: 'production'
+    secrets:
+      KEYSTORE_BASE64: ${{ secrets.KEYSTORE_BASE64 }}
+      KEYSTORE_PASSWORD: ${{ secrets.KEYSTORE_PASSWORD }}
+      KEY_ALIAS: ${{ secrets.KEY_ALIAS }}
+      KEY_PASSWORD: ${{ secrets.KEY_PASSWORD }}
+
+  # Deploy to Google Play
+  deploy-play-store:
+    name: 🏪 Deploy to Play Store
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: production
+      url: https://play.google.com/store/apps/details?id=app.heightbanana
+    
+    steps:
+      - name: 📥 Checkout code
+        uses: actions/checkout@v4
+
+      - name: 📥 Download AAB
+        uses: actions/download-artifact@v4
+        with:
+          name: aab-production-${{ github.run_number }}
+
+      - name: 🚀 Deploy to Play Store (Internal Testing)
+        uses: r0adkll/upload-google-play@v1
+        with:
+          serviceAccountJsonPlainText: ${{ secrets.GOOGLE_PLAY_SERVICE_ACCOUNT }}
+          packageName: app.heightbanana
+          releaseFiles: app-release.aab
+          track: internal
+          status: completed
+          whatsNewDirectory: distribution/whatsnew
+          mappingFile: build/app/outputs/mapping/release/mapping.txt
+
+  # Deploy to Firebase App Distribution
+  deploy-firebase:
+    name: 🔥 Deploy to Firebase
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: production
+    
+    steps:
+      - name: 📥 Download APK
+        uses: actions/download-artifact@v4
+        with:
+          name: apk-production-${{ github.run_number }}
+
+      - name: 🚀 Deploy to Firebase App Distribution
+        uses: wzieba/Firebase-Distribution-Github-Action@v1
+        with:
+          appId: ${{ secrets.FIREBASE_APP_ID_PROD }}
+          serviceCredentialsFileContent: ${{ secrets.FIREBASE_SERVICE_ACCOUNT }}
+          groups: testers-prod, beta-users
+          file: app-release.apk
+          releaseNotes: |
+            🎉 Production Release ${{ inputs.version }}
+            
+            See full changelog: https://github.com/${{ github.repository }}/releases/tag/${{ inputs.tag-name }}
+
+  # Create GitHub Release
+  create-release:
+    name: 📦 Create GitHub Release
+    needs: [deploy-play-store, deploy-firebase]
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: 📥 Checkout code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: 📥 Download artifacts
+        uses: actions/download-artifact@v4
+
+      - name: 📝 Generate release notes
+        id: notes
+        run: |
+          echo "## 🎉 What's New" > release-notes.md
+          echo "" >> release-notes.md
+          git log --pretty=format:"- %s (%an)" $(git describe --tags --abbrev=0 HEAD^)..HEAD >> release-notes.md
+
+      - name: 🎉 Create GitHub Release
+        uses: softprops/action-gh-release@v1
+        with:
+          tag_name: ${{ inputs.tag-name }}
+          name: Height Banana ${{ inputs.version }}
+          body_path: release-notes.md
+          files: |
+            apk-production-${{ github.run_number }}/app-release.apk
+            aab-production-${{ github.run_number }}/app-release.aab
+          draft: false
+          prerelease: false
+
+  # Post-deployment notifications
+  notify:
+    name: 📢 Notify Team
+    needs: [deploy-play-store, deploy-firebase, create-release]
+    if: always()
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: ✅ Success notification
+        if: needs.create-release.result == 'success'
+        run: |
+          echo "### 🎉 Production Deployment Successful!" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "**Version:** ${{ inputs.version }}" >> $GITHUB_STEP_SUMMARY
+          echo "**Tag:** ${{ inputs.tag-name }}" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "✅ Deployed to Play Store (Internal Testing)" >> $GITHUB_STEP_SUMMARY
+          echo "✅ Deployed to Firebase App Distribution" >> $GITHUB_STEP_SUMMARY
+          echo "✅ GitHub Release created" >> $GITHUB_STEP_SUMMARY
+
+      - name: ❌ Failure notification
+        if: needs.create-release.result == 'failure'
+        run: |
+          echo "### ❌ Production Deployment Failed" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "Check logs for details" >> $GITHUB_STEP_SUMMARY

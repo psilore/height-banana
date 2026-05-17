@@ -1,0 +1,61 @@
+name: 🎉 Release Please
+
+on:
+  push:
+    branches:
+      - main
+
+permissions:
+  contents: write
+  pull-requests: write
+
+jobs:
+  release-please:
+    name: 📝 Create Release PR
+    runs-on: ubuntu-latest
+    outputs:
+      release-created: ${{ steps.release.outputs.release_created }}
+      tag-name: ${{ steps.release.outputs.tag_name }}
+      version: ${{ steps.release.outputs.major }}.${{ steps.release.outputs.minor }}.${{ steps.release.outputs.patch }}
+      pr-number: ${{ steps.release.outputs.pr }}
+    
+    steps:
+      - name: 🎉 Run Release Please
+        id: release
+        uses: google-github-actions/release-please-action@v4
+        with:
+          release-type: simple
+          package-name: height-banana
+          bump-minor-pre-major: true
+          bump-patch-for-minor-pre-major: true
+          changelog-types: |
+            [
+              {"type":"feat","section":"✨ Features","hidden":false},
+              {"type":"fix","section":"🐛 Bug Fixes","hidden":false},
+              {"type":"perf","section":"⚡ Performance","hidden":false},
+              {"type":"refactor","section":"♻️ Refactoring","hidden":false},
+              {"type":"docs","section":"📖 Documentation","hidden":false},
+              {"type":"test","section":"🧪 Tests","hidden":false},
+              {"type":"build","section":"🏗️ Build","hidden":false},
+              {"type":"ci","section":"👷 CI/CD","hidden":false},
+              {"type":"chore","section":"🔧 Chores","hidden":true}
+            ]
+
+      - name: 📋 Release Info
+        if: steps.release.outputs.release_created
+        run: |
+          echo "### 🎉 Release Created!" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "**Version:** ${{ steps.release.outputs.tag_name }}" >> $GITHUB_STEP_SUMMARY
+          echo "**Release PR:** #${{ steps.release.outputs.pr }}" >> $GITHUB_STEP_SUMMARY
+
+  # Trigger production deployment if release was created
+  deploy-production:
+    name: 🚀 Production Deployment
+    needs: release-please
+    if: needs.release-please.outputs.release-created == 'true'
+    uses: ./.github/workflows/deploy-prod.yml
+    with:
+      version: ${{ needs.release-please.outputs.version }}
+      tag-name: ${{ needs.release-please.outputs.tag-name }}
+    secrets: inherit

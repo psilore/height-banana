@@ -1,0 +1,39 @@
+# Conventional Commits Configuration for Release Please
+
+# Use conventional commits for automatic changelog generation
+# Format: <type>(<scope>): <subject>
+#
+# Types:
+# - feat: A new feature (triggers minor version bump)
+# - fix: A bug fix (triggers patch version bump)
+# - perf: Performance improvement
+# - refactor: Code refactoring
+# - docs: Documentation changes
+# - test: Test additions/changes
+# - build: Build system changes
+# - ci: CI/CD changes
+# - chore: Other changes (maintenance)
+#
+# BREAKING CHANGE: Major version bump
+#
+# Examples:
+# feat(auth): add Google Sign-In support
+# fix(camera): resolve camera permission issue on Android 13
+# feat!: redesign statistics dashboard (BREAKING CHANGE)
+# docs: update quickstart guide
+# ci: add automated deployment workflow
+
+# Release Please will:
+# 1. Analyze commits since last release
+# 2. Determine next version (major.minor.patch)
+# 3. Generate changelog
+# 4. Create release PR
+# 5. Tag release when PR is merged
+# 6. Trigger production deployment
+
+# Commit Message Format
+{
+  "header-max-length": 100,
+  "body-max-line-length": 100,
+  "footer-max-line-length": 100
+}
