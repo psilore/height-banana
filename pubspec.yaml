@@ -39,7 +39,7 @@ dependencies:
   json_annotation: ^4.9.0
 
   # UI & Charts
-  fl_chart: ^0.68.0
+  fl_chart: ^1.2.0
   intl: ^0.20.2
 
   # Utilities
