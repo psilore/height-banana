@@ -93,7 +93,7 @@ jobs:
           echo "aab=build/app/outputs/bundle/release/app-release.aab" >> $GITHUB_OUTPUT
 
       - name: 📤 Upload APK artifact
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: apk-${{ inputs.environment }}-${{ inputs.build-number }}
           path: ${{ steps.build.outputs.apk }}
@@ -101,7 +101,7 @@ jobs:
 
       - name: 📤 Upload AAB artifact (Production only)
         if: inputs.environment == 'production'
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: aab-production-${{ inputs.build-number }}
           path: ${{ steps.build.outputs.aab }}
