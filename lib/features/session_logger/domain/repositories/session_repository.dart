@@ -1,7 +1,7 @@
 import '../models/training_session.dart';
 
 /// Repository interface for training session data operations.
-/// 
+///
 /// Implementations handle Firestore + Hive offline sync for session data.
 abstract class SessionRepository {
   /// Get all sessions for a specific user

@@ -13,7 +13,8 @@ class SessionCreateScreen extends ConsumerStatefulWidget {
   const SessionCreateScreen({super.key});
 
   @override
-  ConsumerState<SessionCreateScreen> createState() => _SessionCreateScreenState();
+  ConsumerState<SessionCreateScreen> createState() =>
+      _SessionCreateScreenState();
 }
 
 class _SessionCreateScreenState extends ConsumerState<SessionCreateScreen> {
@@ -68,7 +69,7 @@ class _SessionCreateScreenState extends ConsumerState<SessionCreateScreen> {
 
     try {
       final distance = double.tryParse(_distanceController.text) ?? 18.0;
-      
+
       // Create appropriate target face
       TargetFace targetFace;
       if (_selectedTargetType == TargetType.fita) {
@@ -90,8 +91,8 @@ class _SessionCreateScreenState extends ConsumerState<SessionCreateScreen> {
         distanceMeters: distance,
         targetFace: targetFace,
         ends: [],
-        notes: _notesController.text.trim().isNotEmpty 
-            ? _notesController.text.trim() 
+        notes: _notesController.text.trim().isNotEmpty
+            ? _notesController.text.trim()
             : null,
       );
 

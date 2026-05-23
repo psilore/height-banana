@@ -10,7 +10,8 @@ class GroupingHeatmapScreen extends ConsumerStatefulWidget {
   const GroupingHeatmapScreen({super.key});
 
   @override
-  ConsumerState<GroupingHeatmapScreen> createState() => _GroupingHeatmapScreenState();
+  ConsumerState<GroupingHeatmapScreen> createState() =>
+      _GroupingHeatmapScreenState();
 }
 
 class _GroupingHeatmapScreenState extends ConsumerState<GroupingHeatmapScreen> {
@@ -44,18 +45,14 @@ class _GroupingHeatmapScreenState extends ConsumerState<GroupingHeatmapScreen> {
                   .expand((s) => s.ends)
                   .expand((e) => e.arrows)
                   .toList()
-              : sessions
-                  .expand((s) => s.ends)
-                  .expand((e) => e.arrows)
-                  .toList();
+              : sessions.expand((s) => s.ends).expand((e) => e.arrows).toList();
 
           return Column(
             children: [
               _buildSessionSelector(sessions),
               Expanded(
-                child: arrows.isEmpty
-                    ? _buildEmptyState()
-                    : _buildHeatmap(arrows),
+                child:
+                    arrows.isEmpty ? _buildEmptyState() : _buildHeatmap(arrows),
               ),
               _buildStatistics(arrows),
             ],
@@ -105,12 +102,14 @@ class _GroupingHeatmapScreenState extends ConsumerState<GroupingHeatmapScreen> {
                     value: null,
                     child: Text('All Sessions'),
                   ),
-                  ...sessions.map((session) => DropdownMenuItem(
-                        value: session.id,
-                        child: Text(
-                          '${session.location} - ${session.date.month}/${session.date.day}',
-                        ),
-                      ),),
+                  ...sessions.map(
+                    (session) => DropdownMenuItem(
+                      value: session.id,
+                      child: Text(
+                        '${session.location} - ${session.date.month}/${session.date.day}',
+                      ),
+                    ),
+                  ),
                 ],
                 onChanged: (value) {
                   setState(() => _selectedSessionId = value);
@@ -348,13 +347,13 @@ class HeatmapPainter extends CustomPainter {
     final ringColors = [
       Colors.amber[100]!, // X/10 (gold)
       Colors.amber[200]!,
-      Colors.red[200]!,   // 9/8 (red)
+      Colors.red[200]!, // 9/8 (red)
       Colors.red[300]!,
-      Colors.blue[200]!,  // 7/6 (blue)
+      Colors.blue[200]!, // 7/6 (blue)
       Colors.blue[300]!,
-      Colors.black,       // 5/4 (black)
+      Colors.black, // 5/4 (black)
       Colors.grey[800]!,
-      Colors.grey[300]!,  // 3/2 (white)
+      Colors.grey[300]!, // 3/2 (white)
       Colors.grey[200]!,
     ];
 
@@ -483,8 +482,7 @@ class HeatmapPainter extends CustomPainter {
     final legendY = size.height - 40;
 
     // Target center
-    final centerPaint = Paint()
-      ..color = Colors.red.withValues(alpha: 0.5);
+    final centerPaint = Paint()..color = Colors.red.withValues(alpha: 0.5);
     canvas.drawCircle(Offset(20, legendY), 4, centerPaint);
 
     final centerText = TextPainter(
@@ -498,8 +496,7 @@ class HeatmapPainter extends CustomPainter {
     centerText.paint(canvas, Offset(30, legendY - 6));
 
     // Group center
-    final groupPaint = Paint()
-      ..color = Colors.green;
+    final groupPaint = Paint()..color = Colors.green;
     canvas.drawCircle(Offset(140, legendY), 4, groupPaint);
 
     final groupText = TextPainter(

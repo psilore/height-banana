@@ -16,8 +16,7 @@ class DetectedArrow with _$DetectedArrow {
 
     /// Position relative to target center in centimeters (x, y)
     /// (0, 0) is the target center
-    @OffsetConverter()
-    required Offset position,
+    @OffsetConverter() required Offset position,
 
     /// Detection confidence score (0.0 to 1.0)
     required double confidence,

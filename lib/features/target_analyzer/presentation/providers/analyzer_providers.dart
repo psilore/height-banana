@@ -14,6 +14,7 @@ final arrowDetectionServiceProvider = Provider<ArrowDetectionService>((ref) {
 });
 
 /// Provider for score calculation service
-final scoreCalculationServiceProvider = Provider<ScoreCalculationService>((ref) {
+final scoreCalculationServiceProvider =
+    Provider<ScoreCalculationService>((ref) {
   return ScoreCalculationService();
 });

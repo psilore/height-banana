@@ -51,18 +51,18 @@ class SyncService {
     _isSyncing = true;
     try {
       final repository = _ref.read(sessionRepositoryProvider);
-      
+
       final user = _ref.read(currentUserProvider);
       if (user == null) {
         debugPrint('⚠️ Sync skipped: No authenticated user');
         return;
       }
-      
+
       // Sync logic happens automatically in repository
       // (Firestore streams update Hive cache)
       // This just triggers a refresh
       await repository.getSessions(user.uid).first;
-      
+
       debugPrint('✅ Sync completed successfully');
     } catch (e) {
       debugPrint('❌ Sync failed: $e');
@@ -81,12 +81,12 @@ class SyncService {
 final syncServiceProvider = Provider<SyncService>((ref) {
   final service = SyncService(ref);
   service.startSync();
-  
+
   // Clean up on dispose
   ref.onDispose(() {
     service.stopSync();
   });
-  
+
   return service;
 });
 

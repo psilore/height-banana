@@ -1,7 +1,7 @@
 import '../models/user.dart';
 
 /// Repository interface for user authentication operations.
-/// 
+///
 /// Implementations handle Firebase Authentication and user profile storage.
 abstract class AuthRepository {
   /// Stream of authentication state changes

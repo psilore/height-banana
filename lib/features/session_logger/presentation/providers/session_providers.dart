@@ -16,7 +16,7 @@ final sessionRepositoryProvider = Provider<SessionRepository>((ref) {
 });
 
 /// Provider for sessions stream for current user
-/// 
+///
 /// Automatically filters by authenticated user ID
 final sessionsStreamProvider = StreamProvider<List<TrainingSession>>((ref) {
   final user = ref.watch(currentUserProvider);
@@ -39,13 +39,15 @@ final sessionsListProvider = Provider<List<TrainingSession>>((ref) {
 });
 
 /// Provider for creating a new session
-final createSessionProvider = Provider<Future<void> Function(TrainingSession)>((ref) {
+final createSessionProvider =
+    Provider<Future<void> Function(TrainingSession)>((ref) {
   final repository = ref.watch(sessionRepositoryProvider);
   return (session) => repository.createSession(session);
 });
 
 /// Provider for updating a session
-final updateSessionProvider = Provider<Future<void> Function(TrainingSession)>((ref) {
+final updateSessionProvider =
+    Provider<Future<void> Function(TrainingSession)>((ref) {
   final repository = ref.watch(sessionRepositoryProvider);
   return (session) => repository.updateSession(session);
 });
@@ -57,7 +59,8 @@ final deleteSessionProvider = Provider<Future<void> Function(String)>((ref) {
 });
 
 /// Provider for getting a specific session by ID
-final sessionByIdProvider = FutureProvider.family<TrainingSession?, String>((ref, sessionId) async {
+final sessionByIdProvider =
+    FutureProvider.family<TrainingSession?, String>((ref, sessionId) async {
   final repository = ref.watch(sessionRepositoryProvider);
   return repository.getSessionById(sessionId);
 });

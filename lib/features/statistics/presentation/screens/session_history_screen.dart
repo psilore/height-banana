@@ -10,7 +10,8 @@ class SessionHistoryScreen extends ConsumerStatefulWidget {
   const SessionHistoryScreen({super.key});
 
   @override
-  ConsumerState<SessionHistoryScreen> createState() => _SessionHistoryScreenState();
+  ConsumerState<SessionHistoryScreen> createState() =>
+      _SessionHistoryScreenState();
 }
 
 class _SessionHistoryScreenState extends ConsumerState<SessionHistoryScreen> {
@@ -124,7 +125,7 @@ class _SessionHistoryScreenState extends ConsumerState<SessionHistoryScreen> {
 
   Widget _buildSessionCard(TrainingSession session) {
     final dateFormat = DateFormat('MMM dd, yyyy');
-    
+
     return Card(
       margin: const EdgeInsets.only(bottom: 12),
       child: InkWell(
@@ -180,7 +181,8 @@ class _SessionHistoryScreenState extends ConsumerState<SessionHistoryScreen> {
                 mainAxisAlignment: MainAxisAlignment.spaceAround,
                 children: [
                   _buildStatColumn('Total', session.totalScore.toString()),
-                  _buildStatColumn('Average', session.averageScore.toStringAsFixed(1)),
+                  _buildStatColumn(
+                      'Average', session.averageScore.toStringAsFixed(1)),
                   _buildStatColumn('Ends', session.ends.length.toString()),
                 ],
               ),

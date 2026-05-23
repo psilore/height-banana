@@ -5,7 +5,7 @@ import '../../domain/models/training_session.dart';
 import '../../domain/repositories/session_repository.dart';
 
 /// Firestore + Hive implementation of SessionRepository
-/// 
+///
 /// Implements offline-first architecture:
 /// - Write operations go to Firestore (cloud) and Hive (local cache)
 /// - Read operations prefer Hive cache, fall back to Firestore
@@ -32,10 +32,12 @@ class SessionRepositoryImpl implements SessionRepository {
         .snapshots()
         .map((snapshot) {
       final sessions = snapshot.docs
-          .map((doc) => TrainingSession.fromJson({
-                ...doc.data() as Map<String, dynamic>,
-                'id': doc.id,
-              }),)
+          .map(
+            (doc) => TrainingSession.fromJson({
+              ...doc.data() as Map<String, dynamic>,
+              'id': doc.id,
+            }),
+          )
           .toList();
 
       // Update cache
@@ -89,9 +91,7 @@ class SessionRepositoryImpl implements SessionRepository {
   Future<void> updateSession(TrainingSession session) async {
     try {
       // Update in Firestore
-      await _sessionsCollection
-          .doc(session.id)
-          .update(session.toJson());
+      await _sessionsCollection.doc(session.id).update(session.toJson());
 
       // Update cache
       await _sessionsBox.put(session.id, session);
@@ -128,10 +128,12 @@ class SessionRepositoryImpl implements SessionRepository {
           .get();
 
       return snapshot.docs
-          .map((doc) => TrainingSession.fromJson({
-                ...doc.data() as Map<String, dynamic>,
-                'id': doc.id,
-              }),)
+          .map(
+            (doc) => TrainingSession.fromJson({
+              ...doc.data() as Map<String, dynamic>,
+              'id': doc.id,
+            }),
+          )
           .toList();
     } catch (e) {
       throw Exception('Failed to get sessions by date range: $e');
@@ -151,10 +153,12 @@ class SessionRepositoryImpl implements SessionRepository {
           .get();
 
       return snapshot.docs
-          .map((doc) => TrainingSession.fromJson({
-                ...doc.data() as Map<String, dynamic>,
-                'id': doc.id,
-              }),)
+          .map(
+            (doc) => TrainingSession.fromJson({
+              ...doc.data() as Map<String, dynamic>,
+              'id': doc.id,
+            }),
+          )
           .toList();
     } catch (e) {
       throw Exception('Failed to get sessions by location: $e');
@@ -174,10 +178,12 @@ class SessionRepositoryImpl implements SessionRepository {
           .get();
 
       return snapshot.docs
-          .map((doc) => TrainingSession.fromJson({
-                ...doc.data() as Map<String, dynamic>,
-                'id': doc.id,
-              }),)
+          .map(
+            (doc) => TrainingSession.fromJson({
+              ...doc.data() as Map<String, dynamic>,
+              'id': doc.id,
+            }),
+          )
           .toList();
     } catch (e) {
       throw Exception('Failed to get sessions by bow type: $e');
