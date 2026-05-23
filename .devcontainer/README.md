@@ -14,7 +14,7 @@ This project includes a fully configured **Dev Container** that provides a compl
 ## 📋 Prerequisites
 
 ### Required
-- **Docker Desktop** ([Install](https://www.docker.com/products/docker-desktop))
+- **Docker Engine (docker-ce)** ([Install](https://docs.docker.com/engine/install/))
 - **Visual Studio Code** ([Install](https://code.visualstudio.com/))
 - **Dev Containers Extension** ([Install](https://marketplace.visualstudio.com/items?itemName=ms-vscode-remote.remote-containers))
 
@@ -227,6 +227,30 @@ source ~/.bashrc
    docker system prune -a
    ```
 3. Rebuild container from scratch
+
+### Manual Docker CLI Testing
+
+If the Dev Container is failing to start via VS Code, you can test the underlying Docker environment directly from your host terminal to isolate the issue:
+
+```bash
+# 1. Start an interactive shell inside the Flutter container
+docker run -it --rm \
+  -v "$(pwd):/workspace" \
+  -w /workspace \
+  ghcr.io/cirruslabs/flutter:stable bash
+
+# 2. Test fetching dependencies manually
+docker run --rm \
+  -v "$(pwd):/workspace" \
+  -w /workspace \
+  ghcr.io/cirruslabs/flutter:stable flutter pub get
+
+# 3. Test building an APK manually
+docker run --rm \
+  -v "$(pwd):/workspace" \
+  -w /workspace \
+  ghcr.io/cirruslabs/flutter:stable flutter build apk --debug
+```
 
 ### "Permission denied" errors
 

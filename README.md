@@ -50,7 +50,7 @@ Height Banana is a specialized mobile application designed to help archers track
 **No local Flutter/Android SDK installation needed!** Everything runs in a container:
 
 #### Prerequisites
-- [Docker Desktop](https://www.docker.com/products/docker-desktop)
+- [Docker Engine (docker-ce)](https://docs.docker.com/engine/install/)
 - [VS Code](https://code.visualstudio.com/)
 - [Dev Containers Extension](https://marketplace.visualstudio.com/items?itemName=ms-vscode-remote.remote-containers)
 

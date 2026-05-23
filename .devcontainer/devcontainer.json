@@ -62,7 +62,8 @@
   ],
 
   "runArgs": [
-    "--privileged"
+    "--privileged",
+    "--add-host=host.docker.internal:host-gateway"
   ],
 
   "containerEnv": {
