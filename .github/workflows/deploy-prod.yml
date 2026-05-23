@@ -23,7 +23,7 @@ on:
         type: string
 
 env:
-  FLUTTER_VERSION: '3.22.0'
+  FLUTTER_VERSION: 'any'
 
 jobs:
   # Run full test suite
@@ -31,14 +31,14 @@ jobs:
     name: 🧪 Full Test Suite
     uses: ./.github/workflows/test.yml
     with:
-      flutter-version: '3.22.0'
+      flutter-version: 'any'
 
   # Run quality checks
   quality:
     name: 🔍 Quality Checks
     uses: ./.github/workflows/quality.yml
     with:
-      flutter-version: '3.22.0'
+      flutter-version: 'any'
 
   # Build production artifacts
   build:
@@ -46,7 +46,7 @@ jobs:
     needs: [test, quality]
     uses: ./.github/workflows/build.yml
     with:
-      flutter-version: '3.22.0'
+      flutter-version: 'any'
       build-number: ${{ github.run_number }}
       environment: 'production'
     secrets:

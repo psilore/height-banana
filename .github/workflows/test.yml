@@ -7,7 +7,7 @@ on:
         description: 'Flutter version to use'
         required: false
         type: string
-        default: '3.22.0'
+        default: 'any'
     outputs:
       coverage:
         description: 'Test coverage percentage'

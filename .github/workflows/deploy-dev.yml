@@ -15,7 +15,7 @@ concurrency:
   cancel-in-progress: true
 
 env:
-  FLUTTER_VERSION: '3.22.0'
+  FLUTTER_VERSION: 'any'
 
 jobs:
   # Run all quality checks
@@ -23,14 +23,14 @@ jobs:
     name: 🔍 Quality Checks
     uses: ./.github/workflows/quality.yml
     with:
-      flutter-version: '3.22.0'
+      flutter-version: 'any'
 
   # Run test suite
   test:
     name: 🧪 Test Suite
     uses: ./.github/workflows/test.yml
     with:
-      flutter-version: '3.22.0'
+      flutter-version: 'any'
 
   # Build development APK
   build:
@@ -38,7 +38,7 @@ jobs:
     needs: [quality, test]
     uses: ./.github/workflows/build.yml
     with:
-      flutter-version: '3.22.0'
+      flutter-version: 'any'
       build-number: ${{ github.run_number }}
       environment: 'development'
 
