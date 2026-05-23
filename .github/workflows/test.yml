@@ -50,8 +50,8 @@ jobs:
       - name: 📊 Generate coverage report
         id: coverage
         run: |
-          dart pub global activate coverage
-          dart pub global run coverage:format_coverage --lcov --in=coverage --out=coverage/lcov.info --report-on=lib
+          # flutter test --coverage already generates coverage/lcov.info natively
+          # We simply read it with lcov
           COVERAGE=$(lcov --summary coverage/lcov.info | grep "lines" | awk '{print $2}' | sed 's/%//')
           echo "percentage=$COVERAGE" >> $GITHUB_OUTPUT
           echo "✅ Test coverage: $COVERAGE%"
