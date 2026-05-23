@@ -95,10 +95,10 @@ jobs:
       - name: Verify no secrets in code
         run: |
           echo "Checking for common secret patterns..."
-          ! grep -rE "(firebase_options\.dart|google-services\.json|GoogleService-Info\.plist)" lib/ || {
+          if find . -type f \( -name "firebase_options.dart" -o -name "google-services.json" -o -name "GoogleService-Info.plist" \) | grep -q .; then
             echo "Warning: Firebase config files should not be committed"
             exit 1
-          }
+          fi
           ! grep -rE "(api[_-]?key|secret|password|token).*[:=].*['\"][A-Za-z0-9]{20,}['\"]" lib/ || {
             echo "Warning: Potential hardcoded secrets detected"
             exit 1
