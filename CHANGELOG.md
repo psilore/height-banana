@@ -5,6 +5,19 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.0.1](https://github.com/psilore/height-banana/compare/height-banana-v1.0.0...height-banana-v1.0.1) (2026-05-23)
+
+
+### 👷 CI/CD
+
+* **actions:** bump actions/checkout from 4 to 6 ([#1](https://github.com/psilore/height-banana/issues/1)) ([b719933](https://github.com/psilore/height-banana/commit/b719933eeb0843f32d32929f1a8311b7881f97fd))
+* **actions:** bump actions/dependency-review-action from 4 to 5 ([#9](https://github.com/psilore/height-banana/issues/9)) ([fbf5b35](https://github.com/psilore/height-banana/commit/fbf5b35a6b8e82d6bc2bf1789f3234e0de4bbfa1))
+* **actions:** bump actions/github-script from 7 to 9 ([#11](https://github.com/psilore/height-banana/issues/11)) ([3564ad1](https://github.com/psilore/height-banana/commit/3564ad1ec6ccdacddf87562f20a73565e7081bc9))
+* **actions:** bump actions/setup-java from 4 to 5 ([#2](https://github.com/psilore/height-banana/issues/2)) ([0a0ed51](https://github.com/psilore/height-banana/commit/0a0ed51a6af8f660bdb7cf2fbbf1c607e6b1e49f))
+* **actions:** bump actions/upload-artifact from 4 to 7 ([#10](https://github.com/psilore/height-banana/issues/10)) ([2f46c46](https://github.com/psilore/height-banana/commit/2f46c46b449a644c2bfe5f24d5095da47884fc46))
+* **actions:** bump github/codeql-action from 3 to 4 ([#3](https://github.com/psilore/height-banana/issues/3)) ([2dc46ce](https://github.com/psilore/height-banana/commit/2dc46cea7082925a2ab62595be7b946f5f826180))
+* add security-events write permission to release-please workflow ([#16](https://github.com/psilore/height-banana/issues/16)) ([7738fa3](https://github.com/psilore/height-banana/commit/7738fa3403ed5bf737689c7fb0eb0265bf8ce9f8))
+
 ## [Unreleased]
 
 ### Added
