@@ -5,6 +5,30 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.1.0](https://github.com/psilore/height-banana/compare/height-banana-v1.0.2...height-banana-v1.1.0) (2026-05-23)
+
+
+### ✨ Features
+
+* add JsonConverter implementations for Offset and Map&lt;double, St… ([#27](https://github.com/psilore/height-banana/issues/27)) ([402e424](https://github.com/psilore/height-banana/commit/402e424de838d4cbda6d5517b4ef878de749ee1a))
+
+
+### ♻️ Refactoring
+
+* rely on native flutter test coverage output instead of exte… ([#30](https://github.com/psilore/height-banana/issues/30)) ([ddf54ec](https://github.com/psilore/height-banana/commit/ddf54ec3cfec1bf3a6da871b6d1692d022a63bee))
+
+
+### 📖 Documentation
+
+* update Docker prerequisites to docker-ce and add host networking and CLI debugging steps to devcontainer configuration ([#40](https://github.com/psilore/height-banana/issues/40)) ([2fb0205](https://github.com/psilore/height-banana/commit/2fb02053cda7bd535e8d9a504c71a45b9ffcaa7a))
+
+
+### 👷 CI/CD
+
+* **actions:** bump actions/download-artifact from 4.3.0 to 8.0.1 ([#33](https://github.com/psilore/height-banana/issues/33)) ([66b826a](https://github.com/psilore/height-banana/commit/66b826a29ea7f7fd11f26435ba1d6bf89495ff23))
+* **actions:** bump codecov/codecov-action from 3.1.6 to 6.0.1 ([#34](https://github.com/psilore/height-banana/issues/34)) ([f4040a4](https://github.com/psilore/height-banana/commit/f4040a4a51f9aae20f221dbb13fc37b82ec73cf1))
+* **actions:** bump softprops/action-gh-release from 1 to 3 ([#32](https://github.com/psilore/height-banana/issues/32)) ([edacd28](https://github.com/psilore/height-banana/commit/edacd281eeba5f5ffa5f433c9f31d389e0afd670))
+
 ## [1.0.2](https://github.com/psilore/height-banana/compare/height-banana-v1.0.1...height-banana-v1.0.2) (2026-05-23)
 
 
