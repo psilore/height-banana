@@ -8,7 +8,7 @@ final cameraServiceProvider = Provider<CameraService>((ref) {
 });
 
 /// Service for managing camera operations.
-/// 
+///
 /// Handles camera initialization, permission requests,
 /// image capture, and proper disposal.
 class CameraService {
@@ -27,7 +27,7 @@ class CameraService {
     try {
       // Get available cameras
       _cameras = await availableCameras();
-      
+
       if (_cameras == null || _cameras!.isEmpty) {
         throw CameraException(
           'noCameras',
@@ -62,7 +62,7 @@ class CameraService {
   }
 
   /// Capture an image from the camera
-  /// 
+  ///
   /// Returns the path to the captured image file.
   Future<String> captureImage() async {
     if (!_isInitialized || _controller == null) {
@@ -81,7 +81,7 @@ class CameraService {
 
       // Capture the image
       final XFile image = await _controller!.takePicture();
-      
+
       return image.path;
     } on CameraException catch (e) {
       throw Exception('Failed to capture image: ${e.description}');
@@ -99,7 +99,7 @@ class CameraService {
     try {
       // Get current camera direction
       final currentDirection = _controller?.description.lensDirection;
-      
+
       // Find opposite camera
       final newCamera = _cameras!.firstWhere(
         (camera) => camera.lensDirection != currentDirection,

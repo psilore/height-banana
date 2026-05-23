@@ -5,7 +5,7 @@ import 'package:intl/intl.dart';
 import '../providers/session_providers.dart';
 
 /// Training sessions list screen
-/// 
+///
 /// Displays all training sessions for the authenticated user
 class SessionListScreen extends ConsumerWidget {
   const SessionListScreen({super.key});
@@ -162,9 +162,9 @@ class SessionListScreen extends ConsumerWidget {
                   ),
                 ],
               ),
-              
+
               const SizedBox(height: 12),
-              
+
               // Location and Bow Type
               Row(
                 children: [
@@ -185,9 +185,9 @@ class SessionListScreen extends ConsumerWidget {
                   Text(session.bowType),
                 ],
               ),
-              
+
               const SizedBox(height: 12),
-              
+
               // Stats Row
               Container(
                 padding: const EdgeInsets.all(12.0),

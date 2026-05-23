@@ -6,7 +6,7 @@ import '../../domain/models/user.dart' as domain;
 import '../../domain/repositories/auth_repository.dart';
 
 /// Firebase implementation of authentication repository.
-/// 
+///
 /// Handles Google Sign-In authentication and user profile management
 /// with Cloud Firestore.
 class FirebaseAuthRepository implements AuthRepository {
@@ -26,7 +26,8 @@ class FirebaseAuthRepository implements AuthRepository {
   Stream<domain.User?> get authStateChanges {
     return _firebaseAuth.authStateChanges().asyncMap((firebaseUser) async {
       if (firebaseUser == null) return null;
-      return await getUserProfile(firebaseUser.uid) ?? _mapFirebaseUser(firebaseUser);
+      return await getUserProfile(firebaseUser.uid) ??
+          _mapFirebaseUser(firebaseUser);
     });
   }
 
@@ -42,13 +43,14 @@ class FirebaseAuthRepository implements AuthRepository {
     try {
       // Trigger Google Sign-In flow
       final GoogleSignInAccount? googleUser = await _googleSignIn.signIn();
-      
+
       if (googleUser == null) {
         throw Exception('Google Sign-In cancelled by user');
       }
 
       // Obtain auth details
-      final GoogleSignInAuthentication googleAuth = await googleUser.authentication;
+      final GoogleSignInAuthentication googleAuth =
+          await googleUser.authentication;
 
       // Create Firebase credential
       final credential = firebase_auth.GoogleAuthProvider.credential(
@@ -57,7 +59,8 @@ class FirebaseAuthRepository implements AuthRepository {
       );
 
       // Sign in to Firebase
-      final userCredential = await _firebaseAuth.signInWithCredential(credential);
+      final userCredential =
+          await _firebaseAuth.signInWithCredential(credential);
       final firebaseUser = userCredential.user;
 
       if (firebaseUser == null) {
@@ -74,7 +77,7 @@ class FirebaseAuthRepository implements AuthRepository {
       );
 
       await saveUserProfile(user);
-      
+
       return user;
     } on firebase_auth.FirebaseAuthException catch (e) {
       throw Exception('Firebase Auth Error: ${e.message}');
@@ -99,9 +102,9 @@ class FirebaseAuthRepository implements AuthRepository {
   Future<domain.User?> getUserProfile(String uid) async {
     try {
       final doc = await _firestore.collection('users').doc(uid).get();
-      
+
       if (!doc.exists) return null;
-      
+
       final data = doc.data();
       if (data == null) return null;
 

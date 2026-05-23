@@ -3,14 +3,14 @@ import 'package:google_mlkit_object_detection/google_mlkit_object_detection.dart
 import 'package:image/image.dart' as img;
 
 /// Service for detecting archery targets in images using ML Kit
-/// 
+///
 /// Identifies circular target faces and determines their position,
 /// center point, and boundaries for coordinate normalization.
 class TargetDetectionService {
   ObjectDetector? _objectDetector;
 
   /// Initialize the target detection service
-  /// 
+  ///
   /// Downloads ML Kit models on first use if not cached
   Future<void> initialize() async {
     // Configure object detection for target recognition
@@ -24,7 +24,7 @@ class TargetDetectionService {
   }
 
   /// Detect target in image and return normalized coordinates
-  /// 
+  ///
   /// Returns a map with:
   /// - 'centerX': X coordinate of target center (normalized 0-1)
   /// - 'centerY': Y coordinate of target center (normalized 0-1)
@@ -37,7 +37,7 @@ class TargetDetectionService {
 
     try {
       final inputImage = InputImage.fromFilePath(imagePath);
-      
+
       // Perform object detection
       final objects = await _objectDetector!.processImage(inputImage);
 
@@ -53,7 +53,7 @@ class TargetDetectionService {
         final rect = object.boundingBox;
         final width = rect.width;
         final height = rect.height;
-        
+
         // Calculate circularity (1.0 = perfect circle)
         final aspectRatio = width / height;
         final circularity = 1.0 - (aspectRatio - 1.0).abs();
@@ -77,7 +77,7 @@ class TargetDetectionService {
       // Load image to get dimensions for normalization
       final imageBytes = await _loadImageBytes(imagePath);
       final image = img.decodeImage(imageBytes);
-      
+
       if (image == null) {
         throw Exception('Failed to decode image');
       }
@@ -86,8 +86,8 @@ class TargetDetectionService {
         centerX: centerX / image.width,
         centerY: centerY / image.height,
         radiusPixels: radius,
-        confidence: targetObject.labels.isNotEmpty 
-            ? targetObject.labels.first.confidence 
+        confidence: targetObject.labels.isNotEmpty
+            ? targetObject.labels.first.confidence
             : 0.5,
         imageWidth: image.width,
         imageHeight: image.height,
@@ -98,7 +98,7 @@ class TargetDetectionService {
   }
 
   /// Enhanced target detection using circle detection
-  /// 
+  ///
   /// Falls back to basic computer vision when ML Kit doesn't find targets
   Future<TargetDetectionResult?> detectTargetWithCircleDetection(
     String imagePath,
@@ -113,7 +113,7 @@ class TargetDetectionService {
     try {
       final imageBytes = await _loadImageBytes(imagePath);
       final image = img.decodeImage(imageBytes);
-      
+
       if (image == null) return null;
 
       // Apply Gaussian blur to reduce noise
@@ -151,12 +151,12 @@ class TargetDetectionService {
   }
 
   /// Find circles in grayscale image (simplified algorithm)
-  /// 
+  ///
   /// Production implementation should use OpenCV's Hough Circle Transform
   List<Map<String, double>> _findCircles(img.Image grayscale) {
     // Placeholder for circle detection algorithm
     // In production, integrate OpenCV or implement Hough transform
-    
+
     // For now, return empty list
     // TODO: Implement proper circle detection
     return [];
@@ -188,7 +188,7 @@ class TargetDetectionResult {
   });
 
   /// Convert pixel coordinates to target-relative coordinates
-  /// 
+  ///
   /// Returns (x, y) where (0, 0) is target center in centimeters
   Map<String, double> pixelToTargetCoordinates(
     double pixelX,

@@ -3,7 +3,7 @@ import 'package:image/image.dart' as img;
 import 'target_detection_service.dart';
 
 /// Service for detecting arrows in target images
-/// 
+///
 /// Identifies arrow shafts or points and calculates their position
 /// relative to the target center.
 class ArrowDetectionService {
@@ -13,7 +13,7 @@ class ArrowDetectionService {
   ArrowDetectionService(this._targetDetectionService);
 
   /// Detect arrows in image and return their coordinates
-  /// 
+  ///
   /// Returns list of arrow positions relative to target center
   Future<List<ArrowDetectionResult>> detectArrows(
     String imagePath,
@@ -23,7 +23,7 @@ class ArrowDetectionService {
       // Load and process image
       final imageBytes = await _loadImageBytes(imagePath);
       final image = img.decodeImage(imageBytes);
-      
+
       if (image == null) {
         throw Exception('Failed to decode image');
       }
@@ -49,11 +49,13 @@ class ArrowDetectionService {
           122.0, // Standard target diameter
         );
 
-        results.add(ArrowDetectionResult(
-          x: coords['x']!,
-          y: coords['y']!,
-          confidence: point['confidence']!,
-        ),);
+        results.add(
+          ArrowDetectionResult(
+            x: coords['x']!,
+            y: coords['y']!,
+            confidence: point['confidence']!,
+          ),
+        );
       }
 
       return results;
@@ -80,16 +82,26 @@ class ArrowDetectionService {
     final centerXPixels = (target.centerX * fullImage.width).round();
     final centerYPixels = (target.centerY * fullImage.height).round();
 
-    final left = (centerXPixels - radiusWithMargin).clamp(0, fullImage.width).round();
-    final top = (centerYPixels - radiusWithMargin).clamp(0, fullImage.height).round();
-    final width = (radiusWithMargin * 2).clamp(0, fullImage.width - left).round();
-    final height = (radiusWithMargin * 2).clamp(0, fullImage.height - top).round();
+    final left =
+        (centerXPixels - radiusWithMargin).clamp(0, fullImage.width).round();
+    final top =
+        (centerYPixels - radiusWithMargin).clamp(0, fullImage.height).round();
+    final width =
+        (radiusWithMargin * 2).clamp(0, fullImage.width - left).round();
+    final height =
+        (radiusWithMargin * 2).clamp(0, fullImage.height - top).round();
 
-    return img.copyCrop(fullImage, x: left, y: top, width: width, height: height);
+    return img.copyCrop(
+      fullImage,
+      x: left,
+      y: top,
+      width: width,
+      height: height,
+    );
   }
 
   /// Detect arrow features (shafts and points) in target region
-  /// 
+  ///
   /// Uses edge detection and pattern matching to find arrows
   List<Map<String, double>> _detectArrowFeatures(img.Image targetRegion) {
     // Convert to grayscale
@@ -144,19 +156,19 @@ class ArrowDetectionService {
   img.Image _detectEdges(img.Image grayscale) {
     // Simplified edge detection
     // Production should use proper Sobel/Canny edge detection
-    
+
     // For now, return the grayscale image
     // TODO: Implement proper edge detection
     return grayscale;
   }
 
   /// Find line segments in edge-detected image
-  /// 
+  ///
   /// Uses Hough Line Transform to detect straight lines (arrow shafts)
   List<Map<String, double>> _findLines(img.Image edges) {
     // Placeholder for line detection
     // Production: Use OpenCV's HoughLinesP for line detection
-    
+
     // TODO: Implement proper line detection
     return [];
   }
@@ -165,7 +177,7 @@ class ArrowDetectionService {
   List<Map<String, double>> _findSmallCircles(img.Image edges) {
     // Placeholder for circle detection
     // Production: Use OpenCV's HoughCircles with small radius range
-    
+
     // TODO: Implement proper small circle detection
     return [];
   }
@@ -187,7 +199,7 @@ class ArrowDetectionResult {
   double get distanceFromCenter => (x * x + y * y);
 
   /// Calculate score based on distance and target face
-  /// 
+  ///
   /// Uses simplified scoring for standard FITA target
   String calculateScore() {
     final distance = distanceFromCenter;
@@ -204,7 +216,7 @@ class ArrowDetectionResult {
     if (distance <= 54.9) return '3';
     if (distance <= 61.0) return '2';
     if (distance <= 61.1) return '1';
-    
+
     return 'M'; // Miss
   }
 }

@@ -5,7 +5,7 @@ import '../../../../app/theme/app_theme.dart';
 import '../providers/auth_providers.dart';
 
 /// Login screen with Google Sign-In
-/// 
+///
 /// Displays branding and provides Google authentication
 class LoginScreen extends ConsumerStatefulWidget {
   const LoginScreen({super.key});
@@ -27,7 +27,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
     try {
       final signIn = ref.read(signInProvider);
       await signIn();
-      
+
       // Navigation handled by auth state listener in main app
     } catch (e) {
       setState(() {
@@ -69,9 +69,9 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                     color: AppTheme.primaryGreen,
                   ),
                 ),
-                
+
                 const SizedBox(height: 32),
-                
+
                 // App Name
                 Text(
                   'Height Banana',
@@ -80,9 +80,9 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                         fontWeight: FontWeight.bold,
                       ),
                 ),
-                
+
                 const SizedBox(height: 8),
-                
+
                 // Tagline
                 Text(
                   'Archery Analytics & Training',
@@ -90,9 +90,9 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                         color: AppTheme.primaryGold,
                       ),
                 ),
-                
+
                 const SizedBox(height: 48),
-                
+
                 // Features List
                 _buildFeatureItem(
                   icon: Icons.analytics_outlined,
@@ -108,9 +108,9 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                   icon: Icons.trending_up,
                   text: 'Analyze your performance',
                 ),
-                
+
                 const SizedBox(height: 48),
-                
+
                 // Error Message
                 if (_errorMessage != null)
                   Padding(
@@ -124,7 +124,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                       textAlign: TextAlign.center,
                     ),
                   ),
-                
+
                 // Google Sign In Button
                 _isLoading
                     ? const CircularProgressIndicator(
@@ -154,9 +154,9 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                           elevation: 4,
                         ),
                       ),
-                
+
                 const SizedBox(height: 24),
-                
+
                 // Privacy Note
                 Text(
                   'By signing in, you agree to our Terms of Service\nand Privacy Policy',

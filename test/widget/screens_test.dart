@@ -30,14 +30,15 @@ void main() {
 
       final button = find.byType(ElevatedButton).first;
       expect(button, findsOneWidget);
-      
+
       await tester.tap(button);
       await tester.pump();
     });
   });
 
   group('SessionListScreen Widget Tests', () {
-    testWidgets('Shows loading indicator initially', (WidgetTester tester) async {
+    testWidgets('Shows loading indicator initially',
+        (WidgetTester tester) async {
       await tester.pumpWidget(
         const ProviderScope(
           child: MaterialApp(

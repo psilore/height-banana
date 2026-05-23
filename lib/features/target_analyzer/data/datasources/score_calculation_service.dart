@@ -1,15 +1,15 @@
 import '../../../session_logger/domain/models/target_face.dart';
 
 /// Service for calculating arrow scores from coordinates
-/// 
+///
 /// Maps arrow impact coordinates to score values based on
 /// target face configuration and archery scoring rules.
 class ScoreCalculationService {
   /// Calculate score from arrow coordinates
-  /// 
+  ///
   /// [x] and [y] are coordinates in centimeters from target center
   /// [targetFace] defines the scoring zones
-  /// 
+  ///
   /// Archery rule: If arrow touches a line, higher score is awarded
   String calculateScore(
     double x,
@@ -21,10 +21,10 @@ class ScoreCalculationService {
   }
 
   /// Calculate score with line-touching detection
-  /// 
+  ///
   /// Applies the archery rule: arrow touching a line between zones
   /// receives the higher score value.
-  /// 
+  ///
   /// [touchMarginCm] is the margin in cm to consider "touching" (default 0.5cm)
   String calculateScoreWithLineDetection(
     double x,
@@ -33,16 +33,16 @@ class ScoreCalculationService {
     double touchMarginCm = 0.5,
   }) {
     final distance = (x * x + y * y);
-    
+
     // Get scoring zones sorted by radius
     final sortedZones = targetFace.scoringZones.entries.toList()
       ..sort((a, b) => a.key.compareTo(b.key));
-    
+
     // Check each zone boundary
     for (int i = 0; i < sortedZones.length; i++) {
       final zone = sortedZones[i];
       final radiusSquared = zone.key * zone.key;
-      
+
       // Check if arrow is within this zone
       if (distance <= radiusSquared) {
         // Check if arrow is touching the inner boundary (higher score)
@@ -51,17 +51,18 @@ class ScoreCalculationService {
           final innerRadiusSquared = innerZone.key * innerZone.key;
           final touchDistance = (zone.key - touchMarginCm);
           final touchDistanceSquared = touchDistance * touchDistance;
-          
+
           // If touching inner line, award inner (higher) score
-          if (distance >= touchDistanceSquared && distance <= innerRadiusSquared) {
+          if (distance >= touchDistanceSquared &&
+              distance <= innerRadiusSquared) {
             return innerZone.value; // Higher score
           }
         }
-        
+
         return zone.value;
       }
     }
-    
+
     return 'M'; // Miss - outside all zones
   }
 
@@ -80,7 +81,7 @@ class ScoreCalculationService {
   }
 
   /// Calculate numeric score from string value
-  /// 
+  ///
   /// Converts score values to numbers for totaling
   int scoreToNumeric(String scoreValue) {
     switch (scoreValue.toUpperCase()) {
@@ -113,27 +114,27 @@ class ScoreCalculationService {
     double touchMarginCm = 0.5,
   }) {
     final distance = (x * x + y * y);
-    
+
     final sortedZones = targetFace.scoringZones.entries.toList()
       ..sort((a, b) => a.key.compareTo(b.key));
-    
+
     for (final zone in sortedZones) {
       final innerRadius = zone.key - touchMarginCm;
       final innerRadiusSquared = innerRadius * innerRadius;
       final outerRadius = zone.key + touchMarginCm;
       final outerRadiusSquared = outerRadius * outerRadius;
-      
+
       // Check if arrow is near this zone boundary
       if (distance >= innerRadiusSquared && distance <= outerRadiusSquared) {
         return true;
       }
     }
-    
+
     return false;
   }
 
   /// Get score color for UI display
-  /// 
+  ///
   /// Returns appropriate color based on score value
   String getScoreColor(String scoreValue) {
     switch (scoreValue.toUpperCase()) {
@@ -162,7 +163,20 @@ class ScoreCalculationService {
 
   /// Validate score value
   bool isValidScore(String scoreValue) {
-    final validScores = ['X', '10', '9', '8', '7', '6', '5', '4', '3', '2', '1', 'M'];
+    final validScores = [
+      'X',
+      '10',
+      '9',
+      '8',
+      '7',
+      '6',
+      '5',
+      '4',
+      '3',
+      '2',
+      '1',
+      'M',
+    ];
     return validScores.contains(scoreValue.toUpperCase());
   }
 }

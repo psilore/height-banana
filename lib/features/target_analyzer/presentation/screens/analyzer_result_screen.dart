@@ -470,17 +470,20 @@ class _EditArrowDialogState extends State<_EditArrowDialog> {
             const SizedBox(height: 8),
             Wrap(
               spacing: 8,
-              children: ['X', '10', '9', '8', '7', '6', '5', '4', '3', '2', '1', 'M']
-                  .map((score) => ChoiceChip(
-                        label: Text(score),
-                        selected: _selectedScore == score,
-                        onSelected: (selected) {
-                          if (selected) {
-                            setState(() => _selectedScore = score);
-                          }
-                        },
-                      ),)
-                  .toList(),
+              children:
+                  ['X', '10', '9', '8', '7', '6', '5', '4', '3', '2', '1', 'M']
+                      .map(
+                        (score) => ChoiceChip(
+                          label: Text(score),
+                          selected: _selectedScore == score,
+                          onSelected: (selected) {
+                            if (selected) {
+                              setState(() => _selectedScore = score);
+                            }
+                          },
+                        ),
+                      )
+                      .toList(),
             ),
             const SizedBox(height: 16),
             const Text(

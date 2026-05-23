@@ -85,8 +85,9 @@ class StatsDashboardScreen extends ConsumerWidget {
 
     final averageScore = totalArrows > 0 ? totalScore / totalArrows : 0.0;
 
-    final bestSession = sessions.reduce((a, b) =>
-        a.averageScore > b.averageScore ? a : b,);
+    final bestSession = sessions.reduce(
+      (a, b) => a.averageScore > b.averageScore ? a : b,
+    );
 
     return Row(
       children: [
@@ -129,7 +130,12 @@ class StatsDashboardScreen extends ConsumerWidget {
     );
   }
 
-  Widget _buildStatCard(String label, String value, IconData icon, Color color) {
+  Widget _buildStatCard(
+    String label,
+    String value,
+    IconData icon,
+    Color color,
+  ) {
     return Card(
       elevation: 2,
       child: Padding(
@@ -253,7 +259,8 @@ class StatsDashboardScreen extends ConsumerWidget {
     final distanceGroups = <double, List<double>>{};
 
     for (var session in sessions) {
-      distanceGroups.putIfAbsent(session.distanceMeters, () => [])
+      distanceGroups
+          .putIfAbsent(session.distanceMeters, () => [])
           .add(session.averageScore);
     }
 
@@ -319,7 +326,20 @@ class StatsDashboardScreen extends ConsumerWidget {
       }
     }
 
-    final scores = ['X', '10', '9', '8', '7', '6', '5', '4', '3', '2', '1', 'M'];
+    final scores = [
+      'X',
+      '10',
+      '9',
+      '8',
+      '7',
+      '6',
+      '5',
+      '4',
+      '3',
+      '2',
+      '1',
+      'M',
+    ];
     final data = scores.map((score) {
       final count = scoreCount[score] ?? 0;
       return BarChartGroupData(
@@ -370,7 +390,8 @@ class StatsDashboardScreen extends ConsumerWidget {
                       sideTitles: SideTitles(
                         showTitles: true,
                         getTitlesWidget: (value, meta) {
-                          if (value.toInt() >= 0 && value.toInt() < scores.length) {
+                          if (value.toInt() >= 0 &&
+                              value.toInt() < scores.length) {
                             return Text(
                               scores[value.toInt()],
                               style: const TextStyle(fontSize: 10),
@@ -418,20 +439,23 @@ class StatsDashboardScreen extends ConsumerWidget {
               ),
             ),
             const SizedBox(height: 16),
-            ...recentSessions.map((session) => ListTile(
-              leading: CircleAvatar(
-                child: Text('${session.date.day}'),
-              ),
-              title: Text(session.location),
-              subtitle: Text('${session.distanceMeters}m • ${session.bowType}'),
-              trailing: Text(
-                session.averageScore.toStringAsFixed(1),
-                style: const TextStyle(
-                  fontWeight: FontWeight.bold,
-                  fontSize: 16,
+            ...recentSessions.map(
+              (session) => ListTile(
+                leading: CircleAvatar(
+                  child: Text('${session.date.day}'),
+                ),
+                title: Text(session.location),
+                subtitle:
+                    Text('${session.distanceMeters}m • ${session.bowType}'),
+                trailing: Text(
+                  session.averageScore.toStringAsFixed(1),
+                  style: const TextStyle(
+                    fontWeight: FontWeight.bold,
+                    fontSize: 16,
+                  ),
                 ),
               ),
-            ),),
+            ),
           ],
         ),
       ),

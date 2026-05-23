@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../../session_logger/domain/models/arrow.dart';
 import '../../../session_logger/domain/models/end.dart';
-import '../../../session_logger/presentation/providers/session_providers.dart';
 
 /// Screen for logging arrows in an end.
 /// Supports both manual score entry and camera capture for arrow detection.
@@ -80,7 +79,8 @@ class _EndLoggerScreenState extends ConsumerState<EndLoggerScreen> {
     }
 
     // Generate temporary end ID
-    final endId = 'end_${widget.endNumber}_${DateTime.now().millisecondsSinceEpoch}';
+    final endId =
+        'end_${widget.endNumber}_${DateTime.now().millisecondsSinceEpoch}';
 
     // Navigate to camera capture screen
     Navigator.pushNamed(
@@ -104,7 +104,7 @@ class _EndLoggerScreenState extends ConsumerState<EndLoggerScreen> {
     setState(() => _isSaving = true);
 
     try {
-      final sessionRepository = ref.read(sessionRepositoryProvider);
+      // sessionRepository to be used later
 
       // Create End object
       final end = End(
@@ -167,9 +167,7 @@ class _EndLoggerScreenState extends ConsumerState<EndLoggerScreen> {
 
           // Arrow list
           Expanded(
-            child: _arrows.isEmpty
-                ? _buildEmptyState()
-                : _buildArrowList(),
+            child: _arrows.isEmpty ? _buildEmptyState() : _buildArrowList(),
           ),
 
           // Score input panel
@@ -283,9 +281,8 @@ class _EndLoggerScreenState extends ConsumerState<EndLoggerScreen> {
     return ReorderableListView.builder(
       padding: const EdgeInsets.symmetric(horizontal: 16),
       itemCount: _arrows.length,
-      onReorder: (oldIndex, newIndex) {
+      onReorderItem: (oldIndex, newIndex) {
         setState(() {
-          if (newIndex > oldIndex) newIndex--;
           final arrow = _arrows.removeAt(oldIndex);
           _arrows.insert(newIndex, arrow);
         });
@@ -378,9 +375,20 @@ class _EndLoggerScreenState extends ConsumerState<EndLoggerScreen> {
             Wrap(
               spacing: 8,
               runSpacing: 8,
-              children: ['X', '10', '9', '8', '7', '6', '5', '4', '3', '2', '1', 'M']
-                  .map((score) => _buildScoreButton(score))
-                  .toList(),
+              children: [
+                'X',
+                '10',
+                '9',
+                '8',
+                '7',
+                '6',
+                '5',
+                '4',
+                '3',
+                '2',
+                '1',
+                'M',
+              ].map((score) => _buildScoreButton(score)).toList(),
             ),
           ],
         ),
@@ -410,9 +418,7 @@ class _EndLoggerScreenState extends ConsumerState<EndLoggerScreen> {
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(8),
             border: Border.all(
-              color: isSelected
-                  ? _getScoreColor(score)
-                  : Colors.grey[300]!,
+              color: isSelected ? _getScoreColor(score) : Colors.grey[300]!,
               width: 2,
             ),
           ),
@@ -473,18 +479,20 @@ class _EditArrowScoreDialogState extends State<_EditArrowScoreDialog> {
         spacing: 8,
         runSpacing: 8,
         children: ['X', '10', '9', '8', '7', '6', '5', '4', '3', '2', '1', 'M']
-            .map((score) => ChoiceChip(
-                  label: Text(
-                    score,
-                    style: const TextStyle(fontWeight: FontWeight.bold),
-                  ),
-                  selected: _selectedScore == score,
-                  onSelected: (selected) {
-                    if (selected) {
-                      setState(() => _selectedScore = score);
-                    }
-                  },
-                ),)
+            .map(
+              (score) => ChoiceChip(
+                label: Text(
+                  score,
+                  style: const TextStyle(fontWeight: FontWeight.bold),
+                ),
+                selected: _selectedScore == score,
+                onSelected: (selected) {
+                  if (selected) {
+                    setState(() => _selectedScore = score);
+                  }
+                },
+              ),
+            )
             .toList(),
       ),
       actions: [

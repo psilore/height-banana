@@ -4,7 +4,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../providers/auth_providers.dart';
 
 /// User profile screen
-/// 
+///
 /// Displays user information and provides sign out functionality
 class ProfileScreen extends ConsumerWidget {
   const ProfileScreen({super.key});
@@ -40,9 +40,9 @@ class ProfileScreen extends ConsumerWidget {
                 radius: 60,
                 child: Icon(Icons.person, size: 60),
               ),
-            
+
             const SizedBox(height: 24),
-            
+
             // Display Name
             if (user.displayName != null)
               Text(
@@ -50,9 +50,9 @@ class ProfileScreen extends ConsumerWidget {
                 style: Theme.of(context).textTheme.headlineSmall,
                 textAlign: TextAlign.center,
               ),
-            
+
             const SizedBox(height: 8),
-            
+
             // Email
             Text(
               user.email,
@@ -61,9 +61,9 @@ class ProfileScreen extends ConsumerWidget {
                   ),
               textAlign: TextAlign.center,
             ),
-            
+
             const SizedBox(height: 32),
-            
+
             // Account Info Card
             Card(
               child: Column(
@@ -87,9 +87,9 @@ class ProfileScreen extends ConsumerWidget {
                 ],
               ),
             ),
-            
+
             const SizedBox(height: 24),
-            
+
             // Settings Section
             const Text(
               'Settings',
@@ -98,9 +98,9 @@ class ProfileScreen extends ConsumerWidget {
                 fontWeight: FontWeight.bold,
               ),
             ),
-            
+
             const SizedBox(height: 16),
-            
+
             Card(
               child: Column(
                 children: [
@@ -128,9 +128,9 @@ class ProfileScreen extends ConsumerWidget {
                 ],
               ),
             ),
-            
+
             const SizedBox(height: 32),
-            
+
             // Sign Out Button
             SizedBox(
               width: double.infinity,
@@ -152,9 +152,9 @@ class ProfileScreen extends ConsumerWidget {
                 ),
               ),
             ),
-            
+
             const SizedBox(height: 16),
-            
+
             // App Version
             Text(
               'Version 1.0.0',
@@ -170,10 +170,20 @@ class ProfileScreen extends ConsumerWidget {
 
   String _formatDate(DateTime date) {
     final months = [
-      'January', 'February', 'March', 'April', 'May', 'June',
-      'July', 'August', 'September', 'October', 'November', 'December',
+      'January',
+      'February',
+      'March',
+      'April',
+      'May',
+      'June',
+      'July',
+      'August',
+      'September',
+      'October',
+      'November',
+      'December',
     ];
-    
+
     return '${months[date.month - 1]} ${date.year}';
   }
 }

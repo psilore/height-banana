@@ -23,12 +23,14 @@ class OffsetConverter implements JsonConverter<Offset, Map<String, dynamic>> {
 }
 
 /// Converts a Map with double keys to and from JSON (since JSON requires string keys).
-class DoubleStringMapConverter implements JsonConverter<Map<double, String>, Map<String, dynamic>> {
+class DoubleStringMapConverter
+    implements JsonConverter<Map<double, String>, Map<String, dynamic>> {
   const DoubleStringMapConverter();
 
   @override
   Map<double, String> fromJson(Map<String, dynamic> json) {
-    return json.map((key, value) => MapEntry(double.parse(key), value as String));
+    return json
+        .map((key, value) => MapEntry(double.parse(key), value as String));
   }
 
   @override

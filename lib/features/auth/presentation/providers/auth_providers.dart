@@ -17,7 +17,7 @@ final authRepositoryProvider = Provider<AuthRepository>((ref) {
 });
 
 /// Provider for authentication state stream
-/// 
+///
 /// Emits the current user when authenticated, null when signed out
 final authStateProvider = StreamProvider<domain.User?>((ref) {
   final authRepository = ref.watch(authRepositoryProvider);
@@ -25,7 +25,7 @@ final authStateProvider = StreamProvider<domain.User?>((ref) {
 });
 
 /// Provider for current authenticated user
-/// 
+///
 /// Returns null if not authenticated
 final currentUserProvider = Provider<domain.User?>((ref) {
   final authRepository = ref.watch(authRepositoryProvider);

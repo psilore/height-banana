@@ -1,3 +1,4 @@
+// ignore_for_file: deprecated_member_use
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:intl/intl.dart';
@@ -9,7 +10,8 @@ class SessionHistoryScreen extends ConsumerStatefulWidget {
   const SessionHistoryScreen({super.key});
 
   @override
-  ConsumerState<SessionHistoryScreen> createState() => _SessionHistoryScreenState();
+  ConsumerState<SessionHistoryScreen> createState() =>
+      _SessionHistoryScreenState();
 }
 
 class _SessionHistoryScreenState extends ConsumerState<SessionHistoryScreen> {
@@ -123,7 +125,7 @@ class _SessionHistoryScreenState extends ConsumerState<SessionHistoryScreen> {
 
   Widget _buildSessionCard(TrainingSession session) {
     final dateFormat = DateFormat('MMM dd, yyyy');
-    
+
     return Card(
       margin: const EdgeInsets.only(bottom: 12),
       child: InkWell(
@@ -179,7 +181,10 @@ class _SessionHistoryScreenState extends ConsumerState<SessionHistoryScreen> {
                 mainAxisAlignment: MainAxisAlignment.spaceAround,
                 children: [
                   _buildStatColumn('Total', session.totalScore.toString()),
-                  _buildStatColumn('Average', session.averageScore.toStringAsFixed(1)),
+                  _buildStatColumn(
+                    'Average',
+                    session.averageScore.toStringAsFixed(1),
+                  ),
                   _buildStatColumn('Ends', session.ends.length.toString()),
                 ],
               ),
@@ -273,7 +278,6 @@ class _SessionHistoryScreenState extends ConsumerState<SessionHistoryScreen> {
         content: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
-            // ignore: deprecated_member_use
             RadioListTile<String>(
               title: const Text('Date'),
               value: 'date',
@@ -283,7 +287,6 @@ class _SessionHistoryScreenState extends ConsumerState<SessionHistoryScreen> {
                 Navigator.pop(context);
               },
             ),
-            // ignore: deprecated_member_use
             RadioListTile<String>(
               title: const Text('Score'),
               value: 'score',
@@ -293,7 +296,6 @@ class _SessionHistoryScreenState extends ConsumerState<SessionHistoryScreen> {
                 Navigator.pop(context);
               },
             ),
-            // ignore: deprecated_member_use
             RadioListTile<String>(
               title: const Text('Location'),
               value: 'location',
