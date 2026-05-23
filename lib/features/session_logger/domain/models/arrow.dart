@@ -1,3 +1,4 @@
+import 'dart:math' as math;
 import 'package:freezed_annotation/freezed_annotation.dart';
 
 part 'arrow.freezed.dart';
@@ -14,7 +15,7 @@ class Arrow with _$Arrow {
     required String id,
     
     /// Score value: 'X' (inner 10), '10', '9', '8', '7', '6', '5', '4', '3', '2', '1', 'M' (miss)
-    required String scoreValue,
+    required String score,
     
     /// X coordinate relative to target center (normalized)
     /// Negative = left of center, Positive = right of center
@@ -34,11 +35,11 @@ class Arrow with _$Arrow {
 
   /// Convert score value to numeric points (X=10, M=0)
   int get numericScore {
-    if (scoreValue == 'X') return 10;
-    if (scoreValue == 'M') return 0;
-    return int.tryParse(scoreValue) ?? 0;
+    if (score == 'X') return 10;
+    if (score == 'M') return 0;
+    return int.tryParse(score) ?? 0;
   }
 
   /// Calculate distance from center point
-  double get distanceFromCenter => (x * x + y * y);
+  double get distanceFromCenter => math.sqrt(x * x + y * y);
 }

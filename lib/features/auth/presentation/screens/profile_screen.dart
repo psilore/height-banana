@@ -171,7 +171,7 @@ class ProfileScreen extends ConsumerWidget {
   String _formatDate(DateTime date) {
     final months = [
       'January', 'February', 'March', 'April', 'May', 'June',
-      'July', 'August', 'September', 'October', 'November', 'December'
+      'July', 'August', 'September', 'October', 'November', 'December',
     ];
     
     return '${months[date.month - 1]} ${date.year}';

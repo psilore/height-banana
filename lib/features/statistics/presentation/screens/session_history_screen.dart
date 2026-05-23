@@ -160,7 +160,7 @@ class _SessionHistoryScreenState extends ConsumerState<SessionHistoryScreen> {
                 children: [
                   _buildInfoChip(
                     Icons.sports_baseball,
-                    '${session.bowType}',
+                    session.bowType,
                   ),
                   const SizedBox(width: 8),
                   _buildInfoChip(
@@ -273,6 +273,7 @@ class _SessionHistoryScreenState extends ConsumerState<SessionHistoryScreen> {
         content: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
+            // ignore: deprecated_member_use
             RadioListTile<String>(
               title: const Text('Date'),
               value: 'date',
@@ -282,6 +283,7 @@ class _SessionHistoryScreenState extends ConsumerState<SessionHistoryScreen> {
                 Navigator.pop(context);
               },
             ),
+            // ignore: deprecated_member_use
             RadioListTile<String>(
               title: const Text('Score'),
               value: 'score',
@@ -291,6 +293,7 @@ class _SessionHistoryScreenState extends ConsumerState<SessionHistoryScreen> {
                 Navigator.pop(context);
               },
             ),
+            // ignore: deprecated_member_use
             RadioListTile<String>(
               title: const Text('Location'),
               value: 'location',

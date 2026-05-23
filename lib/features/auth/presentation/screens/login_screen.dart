@@ -57,7 +57,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                     shape: BoxShape.circle,
                     boxShadow: [
                       BoxShadow(
-                        color: Colors.black.withOpacity(0.2),
+                        color: Colors.black.withValues(alpha: 0.2),
                         blurRadius: 20,
                         offset: const Offset(0, 10),
                       ),
@@ -180,7 +180,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
           width: 40,
           height: 40,
           decoration: BoxDecoration(
-            color: Colors.white.withOpacity(0.2),
+            color: Colors.white.withValues(alpha: 0.2),
             borderRadius: BorderRadius.circular(8),
           ),
           child: Icon(

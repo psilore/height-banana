@@ -110,7 +110,7 @@ class _GroupingHeatmapScreenState extends ConsumerState<GroupingHeatmapScreen> {
                         child: Text(
                           '${session.location} - ${session.date.month}/${session.date.day}',
                         ),
-                      )),
+                      ),),
                 ],
                 onChanged: (value) {
                   setState(() => _selectedSessionId = value);
@@ -241,7 +241,7 @@ class _GroupingHeatmapScreenState extends ConsumerState<GroupingHeatmapScreen> {
     return Container(
       padding: const EdgeInsets.all(12),
       decoration: BoxDecoration(
-        color: color.withOpacity(0.1),
+        color: color.withValues(alpha: 0.1),
         borderRadius: BorderRadius.circular(8),
         border: Border.all(color: color),
       ),
@@ -377,7 +377,7 @@ class HeatmapPainter extends CustomPainter {
 
   void _drawCrosshair(Canvas canvas, Offset center) {
     final paint = Paint()
-      ..color = Colors.red.withOpacity(0.5)
+      ..color = Colors.red.withValues(alpha: 0.5)
       ..strokeWidth = 1;
 
     canvas.drawLine(
@@ -402,13 +402,13 @@ class HeatmapPainter extends CustomPainter {
 
       // Draw heat circle (larger, transparent)
       final heatPaint = Paint()
-        ..color = Colors.red.withOpacity(0.1)
+        ..color = Colors.red.withValues(alpha: 0.1)
         ..style = PaintingStyle.fill;
       canvas.drawCircle(pos, 20, heatPaint);
 
       // Draw arrow marker
       final arrowPaint = Paint()
-        ..color = Colors.red.withOpacity(0.7)
+        ..color = Colors.red.withValues(alpha: 0.7)
         ..style = PaintingStyle.fill;
       canvas.drawCircle(pos, 6, arrowPaint);
 
@@ -484,7 +484,7 @@ class HeatmapPainter extends CustomPainter {
 
     // Target center
     final centerPaint = Paint()
-      ..color = Colors.red.withOpacity(0.5);
+      ..color = Colors.red.withValues(alpha: 0.5);
     canvas.drawCircle(Offset(20, legendY), 4, centerPaint);
 
     final centerText = TextPainter(

@@ -10,7 +10,7 @@ final targetDetectionServiceProvider = Provider<TargetDetectionService>((ref) {
 
 /// Provider for arrow detection service
 final arrowDetectionServiceProvider = Provider<ArrowDetectionService>((ref) {
-  return ArrowDetectionService();
+  return ArrowDetectionService(ref.read(targetDetectionServiceProvider));
 });
 
 /// Provider for score calculation service

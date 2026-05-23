@@ -1,8 +1,5 @@
 import 'package:hive/hive.dart';
 import '../../../features/auth/domain/models/user.dart';
-import '../../../features/session_logger/domain/models/arrow.dart';
-import '../../../features/session_logger/domain/models/end.dart';
-import '../../../features/session_logger/domain/models/target_face.dart';
 import '../../../features/session_logger/domain/models/training_session.dart';
 
 /// Registers all Hive type adapters for local storage.

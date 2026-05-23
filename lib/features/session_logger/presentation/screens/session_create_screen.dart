@@ -165,7 +165,7 @@ class _SessionCreateScreenState extends ConsumerState<SessionCreateScreen> {
 
             // Bow Type Dropdown
             DropdownButtonFormField<String>(
-              value: _selectedBowType,
+              initialValue: _selectedBowType,
               decoration: const InputDecoration(
                 labelText: 'Bow Type',
                 prefixIcon: Icon(Icons.adjust),
@@ -212,7 +212,7 @@ class _SessionCreateScreenState extends ConsumerState<SessionCreateScreen> {
 
             // Target Type
             DropdownButtonFormField<TargetType>(
-              value: _selectedTargetType,
+              initialValue: _selectedTargetType,
               decoration: const InputDecoration(
                 labelText: 'Target Type',
                 prefixIcon: Icon(Icons.gps_fixed),

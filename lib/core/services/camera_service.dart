@@ -1,5 +1,11 @@
 import 'package:camera/camera.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+
+/// Provider for CameraService
+final cameraServiceProvider = Provider<CameraService>((ref) {
+  return CameraService();
+});
 
 /// Service for managing camera operations.
 /// 
