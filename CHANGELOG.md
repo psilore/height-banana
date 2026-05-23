@@ -5,6 +5,13 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.0.2](https://github.com/psilore/height-banana/compare/height-banana-v1.0.1...height-banana-v1.0.2) (2026-05-23)
+
+
+### 🐛 Bug Fixes
+
+* update secret scanning logic and ignore patterns to correctly identify and exclude firebase configuration files ([#23](https://github.com/psilore/height-banana/issues/23)) ([27a0368](https://github.com/psilore/height-banana/commit/27a03680be56a4cf0397522eb5591173c3038c65))
+
 ## [1.0.1](https://github.com/psilore/height-banana/compare/height-banana-v1.0.0...height-banana-v1.0.1) (2026-05-23)
 
 
