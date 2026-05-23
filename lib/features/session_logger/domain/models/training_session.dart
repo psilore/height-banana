@@ -1,6 +1,7 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'end.dart';
 import 'target_face.dart';
+import 'arrow.dart';
 
 part 'training_session.freezed.dart';
 part 'training_session.g.dart';

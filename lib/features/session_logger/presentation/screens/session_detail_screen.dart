@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:intl/intl.dart';
 
+import '../../domain/models/target_face.dart';
 import '../providers/session_providers.dart';
 
 /// Screen displaying details of a training session

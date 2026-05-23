@@ -1,3 +1,4 @@
+// ignore_for_file: deprecated_member_use
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:intl/intl.dart';
@@ -273,7 +274,6 @@ class _SessionHistoryScreenState extends ConsumerState<SessionHistoryScreen> {
         content: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
-            // ignore: deprecated_member_use
             RadioListTile<String>(
               title: const Text('Date'),
               value: 'date',
@@ -283,7 +283,6 @@ class _SessionHistoryScreenState extends ConsumerState<SessionHistoryScreen> {
                 Navigator.pop(context);
               },
             ),
-            // ignore: deprecated_member_use
             RadioListTile<String>(
               title: const Text('Score'),
               value: 'score',
@@ -293,7 +292,6 @@ class _SessionHistoryScreenState extends ConsumerState<SessionHistoryScreen> {
                 Navigator.pop(context);
               },
             ),
-            // ignore: deprecated_member_use
             RadioListTile<String>(
               title: const Text('Location'),
               value: 'location',

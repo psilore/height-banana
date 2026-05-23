@@ -1,8 +1,9 @@
 import 'dart:async';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:connectivity_plus/connectivity_plus.dart';
-import '../features/session_logger/domain/repositories/session_repository.dart';
-import '../features/session_logger/presentation/providers/session_providers.dart';
+import 'package:flutter/foundation.dart';
+import '../../features/auth/presentation/providers/auth_providers.dart';
+import '../../features/session_logger/presentation/providers/session_providers.dart';
 
 /// Background sync service for offline-first architecture.
 /// Monitors connectivity and syncs Hive cache with Firestore when online.
@@ -51,14 +52,20 @@ class SyncService {
     try {
       final repository = _ref.read(sessionRepositoryProvider);
       
+      final user = _ref.read(currentUserProvider);
+      if (user == null) {
+        debugPrint('⚠️ Sync skipped: No authenticated user');
+        return;
+      }
+      
       // Sync logic happens automatically in repository
       // (Firestore streams update Hive cache)
       // This just triggers a refresh
-      await repository.getSessions().first;
+      await repository.getSessions(user.uid).first;
       
-      print('✅ Sync completed successfully');
+      debugPrint('✅ Sync completed successfully');
     } catch (e) {
-      print('❌ Sync failed: $e');
+      debugPrint('❌ Sync failed: $e');
     } finally {
       _isSyncing = false;
     }

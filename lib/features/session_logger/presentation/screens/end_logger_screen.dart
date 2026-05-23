@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../../session_logger/domain/models/arrow.dart';
 import '../../../session_logger/domain/models/end.dart';
-import '../../../session_logger/presentation/providers/session_providers.dart';
 
 /// Screen for logging arrows in an end.
 /// Supports both manual score entry and camera capture for arrow detection.
@@ -104,7 +103,7 @@ class _EndLoggerScreenState extends ConsumerState<EndLoggerScreen> {
     setState(() => _isSaving = true);
 
     try {
-      final sessionRepository = ref.read(sessionRepositoryProvider);
+      // sessionRepository to be used later
 
       // Create End object
       final end = End(
@@ -283,9 +282,8 @@ class _EndLoggerScreenState extends ConsumerState<EndLoggerScreen> {
     return ReorderableListView.builder(
       padding: const EdgeInsets.symmetric(horizontal: 16),
       itemCount: _arrows.length,
-      onReorder: (oldIndex, newIndex) {
+      onReorderItem: (oldIndex, newIndex) {
         setState(() {
-          if (newIndex > oldIndex) newIndex--;
           final arrow = _arrows.removeAt(oldIndex);
           _arrows.insert(newIndex, arrow);
         });
