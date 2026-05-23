@@ -16,27 +16,6 @@ permissions:
   actions: read
 
 jobs:
-  codeql-analysis:
-    name: CodeQL Analysis
-    runs-on: ubuntu-latest
-    timeout-minutes: 20
-
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v6
-
-      - name: Initialize CodeQL
-        uses: github/codeql-action/init@v4
-        with:
-          languages: 'javascript'
-          # CodeQL doesn't directly support Dart, but we can scan for general patterns
-          queries: security-and-quality
-
-      - name: Perform CodeQL Analysis
-        uses: github/codeql-action/analyze@v4
-        with:
-          category: '/language:javascript'
-
   dependency-review:
     name: Dependency Review
     runs-on: ubuntu-latest
@@ -109,13 +88,12 @@ jobs:
   security-report:
     name: Security Summary
     runs-on: ubuntu-latest
-    needs: [codeql-analysis, dart-security-check, secret-scanning]
+    needs: [dart-security-check, secret-scanning]
     if: always()
 
     steps:
       - name: Security Check Summary
         run: |
           echo "### Security Scan Results" >> $GITHUB_STEP_SUMMARY
-          echo "- CodeQL Analysis: ${{ needs.codeql-analysis.result }}" >> $GITHUB_STEP_SUMMARY
           echo "- Dart Security: ${{ needs.dart-security-check.result }}" >> $GITHUB_STEP_SUMMARY
           echo "- Secret Scanning: ${{ needs.secret-scanning.result }}" >> $GITHUB_STEP_SUMMARY
