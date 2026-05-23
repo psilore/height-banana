@@ -182,7 +182,9 @@ class _SessionHistoryScreenState extends ConsumerState<SessionHistoryScreen> {
                 children: [
                   _buildStatColumn('Total', session.totalScore.toString()),
                   _buildStatColumn(
-                      'Average', session.averageScore.toStringAsFixed(1)),
+                    'Average',
+                    session.averageScore.toStringAsFixed(1),
+                  ),
                   _buildStatColumn('Ends', session.ends.length.toString()),
                 ],
               ),

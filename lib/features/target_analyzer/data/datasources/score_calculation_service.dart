@@ -175,7 +175,7 @@ class ScoreCalculationService {
       '3',
       '2',
       '1',
-      'M'
+      'M',
     ];
     return validScores.contains(scoreValue.toUpperCase());
   }

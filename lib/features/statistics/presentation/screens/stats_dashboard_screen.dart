@@ -131,7 +131,11 @@ class StatsDashboardScreen extends ConsumerWidget {
   }
 
   Widget _buildStatCard(
-      String label, String value, IconData icon, Color color) {
+    String label,
+    String value,
+    IconData icon,
+    Color color,
+  ) {
     return Card(
       elevation: 2,
       child: Padding(
@@ -334,7 +338,7 @@ class StatsDashboardScreen extends ConsumerWidget {
       '3',
       '2',
       '1',
-      'M'
+      'M',
     ];
     final data = scores.map((score) {
       final count = scoreCount[score] ?? 0;

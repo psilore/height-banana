@@ -91,8 +91,13 @@ class ArrowDetectionService {
     final height =
         (radiusWithMargin * 2).clamp(0, fullImage.height - top).round();
 
-    return img.copyCrop(fullImage,
-        x: left, y: top, width: width, height: height);
+    return img.copyCrop(
+      fullImage,
+      x: left,
+      y: top,
+      width: width,
+      height: height,
+    );
   }
 
   /// Detect arrow features (shafts and points) in target region

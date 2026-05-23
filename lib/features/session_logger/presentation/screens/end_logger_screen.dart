@@ -387,7 +387,7 @@ class _EndLoggerScreenState extends ConsumerState<EndLoggerScreen> {
                 '3',
                 '2',
                 '1',
-                'M'
+                'M',
               ].map((score) => _buildScoreButton(score)).toList(),
             ),
           ],
