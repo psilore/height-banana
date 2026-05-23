@@ -1,4 +1,5 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
+import 'package:height_banana/core/utils/json_converters.dart';
 
 part 'target_face.freezed.dart';
 part 'target_face.g.dart';
@@ -30,6 +31,7 @@ class TargetFace with _$TargetFace {
     
     /// Scoring ring definitions (radius in cm → score value)
     /// Example: {4.0: 'X', 6.0: '10', 11.0: '9', ...}
+    @DoubleStringMapConverter()
     required Map<double, String> scoringZones,
   }) = _TargetFace;
 

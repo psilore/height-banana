@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
+import 'package:height_banana/core/utils/json_converters.dart';
 
 part 'detected_arrow.freezed.dart';
 part 'detected_arrow.g.dart';
@@ -15,6 +16,7 @@ class DetectedArrow with _$DetectedArrow {
 
     /// Position relative to target center in centimeters (x, y)
     /// (0, 0) is the target center
+    @OffsetConverter()
     required Offset position,
 
     /// Detection confidence score (0.0 to 1.0)
