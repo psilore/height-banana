@@ -2,12 +2,8 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../domain/models/detected_arrow.dart';
-import '../../data/datasources/target_detection_service.dart';
-import '../../data/datasources/arrow_detection_service.dart';
-import '../../data/datasources/score_calculation_service.dart';
 import '../../../session_logger/domain/models/arrow.dart';
 import '../../../session_logger/domain/models/target_face.dart';
-import '../../../session_logger/presentation/providers/session_providers.dart';
 
 /// Screen showing analyzer results with detected arrows overlaid on target image.
 /// Users can review, manually correct, and confirm scores before saving.
@@ -48,19 +44,12 @@ class _AnalyzerResultScreenState extends ConsumerState<AnalyzerResultScreen> {
     });
 
     try {
-      final targetDetectionService = ref.read(targetDetectionServiceProvider);
-      final arrowDetectionService = ref.read(arrowDetectionServiceProvider);
-      final scoreCalculationService = ref.read(scoreCalculationServiceProvider);
-
       // TODO: Load actual image and pass to detection services
       // For now, using mock data
 
       // Step 1: Detect target (get center and radius)
-      final targetCenter = const Offset(0, 0); // Normalized coordinates
-      final targetRadiusCm = 61.0; // FITA 122cm target radius
-
       // Step 2: Create target face configuration
-      _targetFace = TargetFace.fita122cm();
+      _targetFace = TargetFace.fita122();
 
       // Step 3: Detect arrows
       // TODO: Implement actual arrow detection
@@ -111,8 +100,6 @@ class _AnalyzerResultScreenState extends ConsumerState<AnalyzerResultScreen> {
     setState(() => _isSaving = true);
 
     try {
-      final sessionRepository = ref.read(sessionRepositoryProvider);
-
       // Convert DetectedArrows to domain Arrow models
       final arrows = _detectedArrows.map((detected) {
         return Arrow(
@@ -492,7 +479,7 @@ class _EditArrowDialogState extends State<_EditArrowDialog> {
                             setState(() => _selectedScore = score);
                           }
                         },
-                      ))
+                      ),)
                   .toList(),
             ),
             const SizedBox(height: 16),
@@ -576,7 +563,7 @@ class ArrowOverlayPainter extends CustomPainter {
 
     // Draw target center point
     final centerPaint = Paint()
-      ..color = Colors.red.withOpacity(0.6)
+      ..color = Colors.red.withValues(alpha: 0.6)
       ..style = PaintingStyle.fill;
     canvas.drawCircle(center, 8, centerPaint);
 

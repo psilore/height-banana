@@ -35,7 +35,7 @@ class SessionRepositoryImpl implements SessionRepository {
           .map((doc) => TrainingSession.fromJson({
                 ...doc.data() as Map<String, dynamic>,
                 'id': doc.id,
-              }))
+              }),)
           .toList();
 
       // Update cache
@@ -131,7 +131,7 @@ class SessionRepositoryImpl implements SessionRepository {
           .map((doc) => TrainingSession.fromJson({
                 ...doc.data() as Map<String, dynamic>,
                 'id': doc.id,
-              }))
+              }),)
           .toList();
     } catch (e) {
       throw Exception('Failed to get sessions by date range: $e');
@@ -154,7 +154,7 @@ class SessionRepositoryImpl implements SessionRepository {
           .map((doc) => TrainingSession.fromJson({
                 ...doc.data() as Map<String, dynamic>,
                 'id': doc.id,
-              }))
+              }),)
           .toList();
     } catch (e) {
       throw Exception('Failed to get sessions by location: $e');
@@ -177,7 +177,7 @@ class SessionRepositoryImpl implements SessionRepository {
           .map((doc) => TrainingSession.fromJson({
                 ...doc.data() as Map<String, dynamic>,
                 'id': doc.id,
-              }))
+              }),)
           .toList();
     } catch (e) {
       throw Exception('Failed to get sessions by bow type: $e');

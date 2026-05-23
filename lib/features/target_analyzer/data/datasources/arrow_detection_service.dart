@@ -1,5 +1,4 @@
 import 'dart:typed_data';
-import 'package:google_mlkit_object_detection/google_mlkit_object_detection.dart';
 import 'package:image/image.dart' as img;
 import 'target_detection_service.dart';
 
@@ -8,6 +7,7 @@ import 'target_detection_service.dart';
 /// Identifies arrow shafts or points and calculates their position
 /// relative to the target center.
 class ArrowDetectionService {
+  // ignore: unused_field
   final TargetDetectionService _targetDetectionService;
 
   ArrowDetectionService(this._targetDetectionService);
@@ -53,7 +53,7 @@ class ArrowDetectionService {
           x: coords['x']!,
           y: coords['y']!,
           confidence: point['confidence']!,
-        ));
+        ),);
       }
 
       return results;

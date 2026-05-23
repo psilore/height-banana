@@ -42,7 +42,7 @@ class TargetFace with _$TargetFace {
 
   /// Standard FITA/WA 122cm 10-ring target
   factory TargetFace.fita122() {
-    return const TargetFace(
+    return TargetFace(
       type: TargetType.fita,
       diameterCm: 122,
       scoringZones: {

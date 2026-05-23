@@ -118,7 +118,6 @@ class ScoreCalculationService {
       ..sort((a, b) => a.key.compareTo(b.key));
     
     for (final zone in sortedZones) {
-      final radiusSquared = zone.key * zone.key;
       final innerRadius = zone.key - touchMarginCm;
       final innerRadiusSquared = innerRadius * innerRadius;
       final outerRadius = zone.key + touchMarginCm;

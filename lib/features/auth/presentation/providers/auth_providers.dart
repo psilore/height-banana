@@ -3,9 +3,9 @@ import 'package:firebase_auth/firebase_auth.dart' as firebase_auth;
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
-import '../domain/models/user.dart' as domain;
-import '../domain/repositories/auth_repository.dart';
-import '../data/repositories/firebase_auth_repository.dart';
+import '../../domain/models/user.dart' as domain;
+import '../../domain/repositories/auth_repository.dart';
+import '../../data/repositories/firebase_auth_repository.dart';
 
 /// Provider for AuthRepository implementation
 final authRepositoryProvider = Provider<AuthRepository>((ref) {

@@ -86,7 +86,7 @@ class StatsDashboardScreen extends ConsumerWidget {
     final averageScore = totalArrows > 0 ? totalScore / totalArrows : 0.0;
 
     final bestSession = sessions.reduce((a, b) =>
-        a.averageScore > b.averageScore ? a : b);
+        a.averageScore > b.averageScore ? a : b,);
 
     return Row(
       children: [
@@ -236,7 +236,7 @@ class StatsDashboardScreen extends ConsumerWidget {
                       dotData: const FlDotData(show: true),
                       belowBarData: BarAreaData(
                         show: true,
-                        color: Colors.blue.withOpacity(0.1),
+                        color: Colors.blue.withValues(alpha: 0.1),
                       ),
                     ),
                   ],
@@ -425,13 +425,13 @@ class StatsDashboardScreen extends ConsumerWidget {
               title: Text(session.location),
               subtitle: Text('${session.distanceMeters}m • ${session.bowType}'),
               trailing: Text(
-                '${session.averageScore.toStringAsFixed(1)}',
+                session.averageScore.toStringAsFixed(1),
                 style: const TextStyle(
                   fontWeight: FontWeight.bold,
                   fontSize: 16,
                 ),
               ),
-            )),
+            ),),
           ],
         ),
       ),

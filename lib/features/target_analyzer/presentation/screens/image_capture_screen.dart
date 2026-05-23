@@ -1,4 +1,3 @@
-import 'dart:io';
 import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -66,9 +65,8 @@ class _ImageCaptureScreenState extends ConsumerState<ImageCaptureScreen>
 
     try {
       final cameraService = ref.read(cameraServiceProvider);
-      final controller = await cameraService.initializeCamera(
-        resolution: ResolutionPreset.high,
-      );
+      await cameraService.initialize();
+      final controller = cameraService.controller;
 
       if (!mounted) return;
 
@@ -94,7 +92,7 @@ class _ImageCaptureScreenState extends ConsumerState<ImageCaptureScreen>
 
     try {
       final cameraService = ref.read(cameraServiceProvider);
-      final imagePath = await cameraService.captureImage(_cameraController!);
+      final imagePath = await cameraService.captureImage();
 
       if (!mounted) return;
 
@@ -385,12 +383,12 @@ class TargetOverlayPainter extends CustomPainter {
   @override
   void paint(Canvas canvas, Size size) {
     final paint = Paint()
-      ..color = Colors.white.withOpacity(0.5)
+      ..color = Colors.white.withValues(alpha: 0.5)
       ..style = PaintingStyle.stroke
       ..strokeWidth = 2.0;
 
     final centerPaint = Paint()
-      ..color = Colors.red.withOpacity(0.6)
+      ..color = Colors.red.withValues(alpha: 0.6)
       ..style = PaintingStyle.stroke
       ..strokeWidth = 1.5;
 
@@ -415,7 +413,7 @@ class TargetOverlayPainter extends CustomPainter {
     // Draw corner guides
     final cornerLength = 30.0;
     final cornerPaint = Paint()
-      ..color = Colors.white.withOpacity(0.7)
+      ..color = Colors.white.withValues(alpha: 0.7)
       ..style = PaintingStyle.stroke
       ..strokeWidth = 3.0;
 
