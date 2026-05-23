@@ -29,6 +29,8 @@ jobs:
   # Run full test suite
   test:
     name: 🧪 Full Test Suite
+    permissions:
+      contents: read
     uses: ./.github/workflows/test.yml
     with:
       flutter-version: '3.22.0'
@@ -36,6 +38,9 @@ jobs:
   # Run quality checks
   quality:
     name: 🔍 Quality Checks
+    permissions:
+      contents: read
+      security-events: write
     uses: ./.github/workflows/quality.yml
     with:
       flutter-version: '3.22.0'
@@ -43,6 +48,8 @@ jobs:
   # Build production artifacts
   build:
     name: 📦 Build Production
+    permissions:
+      contents: read
     needs: [test, quality]
     uses: ./.github/workflows/build.yml
     with:
@@ -58,6 +65,8 @@ jobs:
   # Deploy to Google Play
   deploy-play-store:
     name: 🏪 Deploy to Play Store
+    permissions:
+      contents: read
     needs: build
     runs-on: ubuntu-latest
     environment:
@@ -87,6 +96,8 @@ jobs:
   # Deploy to Firebase App Distribution
   deploy-firebase:
     name: 🔥 Deploy to Firebase
+    permissions:
+      contents: read
     needs: build
     runs-on: ubuntu-latest
     environment:
@@ -113,6 +124,8 @@ jobs:
   # Create GitHub Release
   create-release:
     name: 📦 Create GitHub Release
+    permissions:
+      contents: write
     needs: [deploy-play-store, deploy-firebase]
     runs-on: ubuntu-latest
     
@@ -147,6 +160,8 @@ jobs:
   # Post-deployment notifications
   notify:
     name: 📢 Notify Team
+    permissions:
+      contents: read
     needs: [deploy-play-store, deploy-firebase, create-release]
     if: always()
     runs-on: ubuntu-latest
