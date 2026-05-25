@@ -5,6 +5,13 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.1.1](https://github.com/psilore/height-banana/compare/height-banana-v1.1.0...height-banana-v1.1.1) (2026-05-23)
+
+
+### 📖 Documentation
+
+* add UI mockups and conceptual design documentation for archery analytics dashboard and target analyzer ([#41](https://github.com/psilore/height-banana/issues/41)) ([71d086e](https://github.com/psilore/height-banana/commit/71d086e36cb87deecb5b278ee67daf732ed90872))
+
 ## [1.1.0](https://github.com/psilore/height-banana/compare/height-banana-v1.0.2...height-banana-v1.1.0) (2026-05-23)
 
 
